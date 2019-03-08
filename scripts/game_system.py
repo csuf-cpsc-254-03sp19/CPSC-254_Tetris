@@ -74,13 +74,10 @@ class GameSystem:
 		pygame.display.set_caption("Tetris")
 		
 	def setup_classic_game(self):
-		debug_sprites = {}
-		sprite_debug_1 = SpriteImage(0, self.pygame_sprites["debug_1.png"])
-		debug_sprites["debug_1.png"] = sprite_debug_1
-		
-		debug_1_object = GameObject(0, 16, 16, None, debug_sprites)
-		debug_1_object.cur_sprite_image = sprite_debug_1
-		self.game_objects[0] = debug_1_object
+		self.object_factory.create_test_obj(16, 16)
+		self.object_factory.create_test_obj(32, 16)
+		self.object_factory.create_test_obj(48, 16)
+		self.object_factory.create_test_obj(64, 16)
 		
 	def main_loop(self):
 		# The entrance to the main loop. The game will continue to loop until 

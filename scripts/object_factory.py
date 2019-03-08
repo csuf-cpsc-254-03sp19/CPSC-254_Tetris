@@ -1,6 +1,8 @@
 import pygame
 
 from pygame.sprite import Sprite
+from sprite_image import SpriteImage
+from game_object import GameObject
 
 """The object factory for creating game objects of different types."""
 class ObjectFactory():
@@ -23,6 +25,11 @@ class ObjectFactory():
 		sprite_debug_1 = SpriteImage(0, self.pygame_sprites["debug_1.png"])
 		debug_sprites["debug_1.png"] = sprite_debug_1
 		
-		debug_1_object = GameObject(cur_game_obj_id, 16, 16, None, debug_sprites)
+		debug_1_object = GameObject(self.cur_game_obj_id, position_x, position_y, 
+				None, debug_sprites)
+				
 		debug_1_object.cur_sprite_image = sprite_debug_1
-		self.game_objects[cur_game_obj_id] = debug_1_object
+		
+		self.game_objects[self.cur_game_obj_id] = debug_1_object
+		
+		self.cur_game_obj_id += 1

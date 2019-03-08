@@ -1,1 +1,2 @@
 
+You must download python 3.7.0 and pygame via pip if you want to be able to run the scripts. Double click on the tetris.py file to run it or use the console and type python tetris.py.

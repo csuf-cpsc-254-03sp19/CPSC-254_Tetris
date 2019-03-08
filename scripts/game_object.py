@@ -3,7 +3,7 @@ import pygame
 from pygame.sprite import Sprite
 
 """The primary game object abstract class. All game object types are inherited from  this class. It contains a dictionary of sprite images, a position in 2D world space, and a collision box. The selection of the default sprite must be chosen by the inherited constuctor."""
-class GameObject(Sprite):
+class GameObject():
 	def __init__(self, object_id, position_x, position_y, collision_box, sprite_images):
 		"""Initialized the game object."""
 		print("Game object created.")

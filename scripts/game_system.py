@@ -3,6 +3,7 @@ import pygame
 from game_object import GameObject
 from input_manager import InputManager
 from sprite_image import SpriteImage
+from object_factory import ObjectFactory
 
 """The primary game system that is the skeleton of the entire game. It contains the setup functions as well as the main game loop and collision detection functions."""
 class GameSystem:
@@ -22,11 +23,17 @@ class GameSystem:
 		# The input manager for managing keyboard and mouse input.
 		self.input_manager = InputManager(self)
 		
+		# The game object factory for creating the game objects.
+		self.object_factory = None
+		
 		# The game objects for the game. Keys are the game object ids.
 		self.game_objects = {}
 		
 		# The pygame sprite images.
 		self.pygame_sprites = {}
+		
+		# Create the game object factory.
+		self.object_factory = ObjectFactory(self.game_objects, self.pygame_sprites)
 		
 	def start_program(self):
 		"""Starts off the program, initializing pygame and loading all the

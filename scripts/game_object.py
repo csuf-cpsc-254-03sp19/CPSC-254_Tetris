@@ -4,7 +4,7 @@ from pygame.sprite import Sprite
 
 """The primary game object abstract class. All game object types are inherited from  this class. It contains a dictionary of sprite images, a position in 2D world space, and a collision box. The selection of the default sprite must be chosen by the inherited constuctor."""
 class GameObject(Sprite):
-	def __init__(self, objectID, positionX, positionY, collision_box, sprite_images):
+	def __init__(self, object_id, position_x, position_y, collision_box, sprite_images):
 		"""Initialized the game object."""
 		print("Game object created.")
 		
@@ -13,13 +13,13 @@ class GameObject(Sprite):
 		self.marked_for_deletion = False
 		
 		# The game object ID.
-		self.objectID = objectID
+		self.object_id = object_id
 		
 		# The x position of the game object in 2D world space.
-		self.positionX = positionX
+		self.position_x = position_x
 		
 		# The y position of the game object in 2D world space.
-		self.positionY = positionY
+		self.position_y = position_y
 		
 		# The current sprite image object being used for rendering.
 		self.cur_sprite_image = None

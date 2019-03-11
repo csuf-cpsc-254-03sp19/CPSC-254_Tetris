@@ -32,8 +32,12 @@ class GameSystem:
 		# The pygame sprite images.
 		self.pygame_sprites = {}
 		
+		# The fonts for the text boxes.
+		self.fonts = {}
+		
 		# Create the game object factory.
-		self.object_factory = ObjectFactory(self.game_objects, self.pygame_sprites)
+		self.object_factory = ObjectFactory(self.game_objects, self.pygame_sprites, 
+				self.fonts)
 		
 	def start_program(self):
 		"""Starts off the program, initializing pygame and loading all the
@@ -42,6 +46,7 @@ class GameSystem:
 		
 		self.setup_pygame()
 		self.load_sprites()
+		self.load_fonts()
 		self.setup_classic_game()
 		self.main_loop()
 		
@@ -70,7 +75,25 @@ class GameSystem:
 	def load_sprite(self, image_folder_url, cur_sprite_image_name):
 		self.pygame_sprites[cur_sprite_image_name] = pygame.image.load( \
 			image_folder_url + cur_sprite_image_name)
-		print(image_folder_url)
+	
+	def load_fonts(self):
+		"""Loads all the fonts for the game engine."""
+		
+		# The fonts url.
+		font_url = "../fonts/"
+		
+		# Load all of the fonts individually.
+		self.load_font(font_url, "PressStart2P.ttf", "PressStart2P-small", 12)
+		self.load_font(font_url, "PressStart2P.ttf", "PressStart2P-large", 50)
+		self.load_font(font_url, "PressStart2P.ttf", "PressStart2P-medium", 32)
+	
+	def load_font(self, fonts_url, font_file_name, font_key_name, size):
+		"""Loads an individual font file."""
+		
+		# The current font being loaded.
+		font1 = pygame.font.Font(fonts_url + font_file_name, size)
+		
+		self.fonts[font_key_name] = font1
 	
 	def setup_pygame(self):
 		"""Sets up the pygame module."""
@@ -88,53 +111,86 @@ class GameSystem:
 		pygame.display.set_caption("Tetris")
 		
 	def setup_classic_game(self):
+		# Load the gameplay game map.
 		self.load_map_gameplay()
+		
+		# The text for the text boxes.
+		text = "NEXT:"
+		
+		# The color of the text for the text boxes.
+		color = (0, 0, 0)
+		
+		# Create all the text boxes for the game gui.
+		self.object_factory.create_text_box(80, 32, text, "PressStart2P-small", 
+				color, False)
+		
+		text = "SAVE:"
+		self.object_factory.create_text_box(80, 640, text, "PressStart2P-small", 
+				color, False)
+		
+		text = "HIGH SCORE:"
+		self.object_factory.create_text_box(565, 32, text, "PressStart2P-small", 
+				color, False)
+		
+		text = "SCORE:"
+		self.object_factory.create_text_box(565, 110, text, "PressStart2P-small", 
+				color, False)
 		
 	def load_map_gameplay(self):
 		with open("map_gameplay.txt", "r") as in_file:
 			# The text containing all the characters for the map objects.
 			map_text = in_file.read()
 				
-			# The current x position of the current map object being read from or the a star node.
+			# The current x position of the current map object being read from.
 			cur_position_x = 8
 
-			# The current y position of the current map object being read from or the a star node.
+			# The current y position of the current map object being read from.
 			cur_position_y = 8
 			
 			 # Go through every character and create the correct map object from it.
 			for char in map_text:
 				if not char == '\n':
-
-					# The current background tile being produced.
-					background_tile1 = None
-
+				
 					# Choose a different sprite based on the character.
 					if char == 'C':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_center.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_center.png")
 					elif char == 'c' or char == ' ':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_out_center.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_out_center.png")
 					elif char == 'U':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_up.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_up.png")
 					elif char == 'D':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_down.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_down.png")
 					elif char == 'L':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_left.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_left.png")
 					elif char == 'R':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_right.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_right.png")
 					elif char == 'H':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_hor.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_hor.png")
 					elif char == '/':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_upleft.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_upleft.png")
 					elif char == '\\':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_upright.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_upright.png")
 					elif char == '[':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_downleft.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_downleft.png")
 					elif char == ']':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_downright.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_downright.png")
 					elif char == 'T':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_leftT.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_leftT.png")
 					elif char == 't':
-						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_rightT.png")
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_in_rightT.png")
 						
 					cur_position_x += 16
 

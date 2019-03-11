@@ -6,7 +6,6 @@ from pygame.sprite import Sprite
 class GameObject():
 	def __init__(self, object_id, position_x, position_y, collision_box, sprite_images):
 		"""Initialized the game object."""
-		print("Game object created.")
 		
 		# Checks if the object is marked for deletion, which will allow the object to
 		# be deleted before the next frame is reached.

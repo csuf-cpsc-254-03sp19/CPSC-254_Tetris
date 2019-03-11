@@ -57,6 +57,7 @@ class GameSystem:
 	def load_sprite(self, image_folder_url, cur_sprite_image_name):
 		self.pygame_sprites[cur_sprite_image_name] = pygame.image.load( \
 			image_folder_url + cur_sprite_image_name)
+		print(image_folder_url)
 	
 	def setup_pygame(self):
 		"""Sets up the pygame module."""
@@ -68,16 +69,44 @@ class GameSystem:
 		self.pygame_clock = pygame.time.Clock()
 
 		# The backbuffer of the game.
-		self.backbuffer = pygame.display.set_mode((512, 768))
+		self.backbuffer = pygame.display.set_mode((640, 800))
 
 		# Set the caption for the game window.
 		pygame.display.set_caption("Tetris")
 		
 	def setup_classic_game(self):
-		self.object_factory.create_test_obj(16, 16)
-		self.object_factory.create_test_obj(32, 16)
-		self.object_factory.create_test_obj(48, 16)
-		self.object_factory.create_test_obj(64, 16)
+		self.load_map_gameplay()
+		
+	def load_map_gameplay(self):
+		with open("map_gameplay.txt", "r") as in_file:
+			# The text containing all the characters for the map objects.
+			map_text = in_file.read()
+				
+			# The current x position of the current map object being read from or the a star node.
+			cur_position_x = 8
+
+			# The current y position of the current map object being read from or the a star node.
+			cur_position_y = 8
+			
+			 # Go through every character and create the correct map object from it.
+			for char in map_text:
+				if not char == '\n':
+
+					# The current background tile being produced.
+					background_tile1 = None
+
+					# Choose a different sprite based on the character.
+					if char == 'B':
+						self.object_factory.create_test_obj(cur_position_x, cur_position_y, 0)
+					elif char == 'o':
+						self.object_factory.create_test_obj(cur_position_x, cur_position_y, 1)
+						
+					cur_position_x += 16
+
+					if cur_position_x >= (42 * 16) + 8:
+						cur_position_x = 8
+						cur_position_y += 16
+			
 		
 	def main_loop(self):
 		# The entrance to the main loop. The game will continue to loop until 

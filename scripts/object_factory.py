@@ -19,12 +19,20 @@ class ObjectFactory():
 		# The pygame sprites being used for creating the game objects.
 		self.pygame_sprites = pygame_sprites
 		
-	def create_test_obj(self, position_x, position_y):
+	def create_test_obj(self, position_x, position_y, obj_type):
 		"""Creates the test object."""
 		debug_sprites = {}
-		sprite_debug_1 = SpriteImage(0, self.pygame_sprites["debug_1.png"])
-		debug_sprites["debug_1.png"] = sprite_debug_1
 		
+		sprite_name = ""
+		
+		if obj_type == 0:
+			sprite_name = "debug_1.png"
+		else:
+			sprite_name = "debug_2.png"
+		
+		sprite_debug_1 = SpriteImage(0, self.pygame_sprites[sprite_name])
+		debug_sprites[sprite_name] = sprite_debug_1
+			
 		debug_1_object = GameObject(self.cur_game_obj_id, position_x, position_y, 
 				None, debug_sprites)
 				

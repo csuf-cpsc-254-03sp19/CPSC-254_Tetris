@@ -41,3 +41,19 @@ class ObjectFactory():
 		self.game_objects[self.cur_game_obj_id] = debug_1_object
 		
 		self.cur_game_obj_id += 1
+		
+	def create_gui_wall(self, position_x, position_y, sprite_name):
+		"""Creates the test object."""
+		debug_sprites = {}
+		
+		sprite_debug_1 = SpriteImage(0, self.pygame_sprites[sprite_name])
+		debug_sprites[sprite_name] = sprite_debug_1
+			
+		debug_1_object = GameObject(self.cur_game_obj_id, position_x, position_y, 
+				None, debug_sprites)
+				
+		debug_1_object.cur_sprite_image = sprite_debug_1
+		
+		self.game_objects[self.cur_game_obj_id] = debug_1_object
+		
+		self.cur_game_obj_id += 1

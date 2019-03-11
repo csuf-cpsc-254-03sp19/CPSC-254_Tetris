@@ -53,6 +53,19 @@ class GameSystem:
 		# image class.
 		self.load_sprite(image_folder_url, "debug_1.png")
 		self.load_sprite(image_folder_url, "debug_2.png")
+		self.load_sprite(image_folder_url, "wall_in_up.png")
+		self.load_sprite(image_folder_url, "wall_in_down.png")
+		self.load_sprite(image_folder_url, "wall_in_left.png")
+		self.load_sprite(image_folder_url, "wall_in_right.png")
+		self.load_sprite(image_folder_url, "wall_in_upright.png")
+		self.load_sprite(image_folder_url, "wall_in_downright.png")
+		self.load_sprite(image_folder_url, "wall_in_downleft.png")
+		self.load_sprite(image_folder_url, "wall_in_upleft.png")
+		self.load_sprite(image_folder_url, "wall_in_center.png")
+		self.load_sprite(image_folder_url, "wall_in_hor.png")
+		self.load_sprite(image_folder_url, "wall_in_leftT.png")
+		self.load_sprite(image_folder_url, "wall_in_rightT.png")
+		self.load_sprite(image_folder_url, "wall_out_center.png")
 		
 	def load_sprite(self, image_folder_url, cur_sprite_image_name):
 		self.pygame_sprites[cur_sprite_image_name] = pygame.image.load( \
@@ -96,14 +109,36 @@ class GameSystem:
 					background_tile1 = None
 
 					# Choose a different sprite based on the character.
-					if char == 'B':
-						self.object_factory.create_test_obj(cur_position_x, cur_position_y, 0)
-					elif char == 'o':
-						self.object_factory.create_test_obj(cur_position_x, cur_position_y, 1)
+					if char == 'C':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_center.png")
+					elif char == 'c' or char == ' ':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_out_center.png")
+					elif char == 'U':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_up.png")
+					elif char == 'D':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_down.png")
+					elif char == 'L':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_left.png")
+					elif char == 'R':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_right.png")
+					elif char == 'H':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_hor.png")
+					elif char == '/':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_upleft.png")
+					elif char == '\\':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_upright.png")
+					elif char == '[':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_downleft.png")
+					elif char == ']':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_downright.png")
+					elif char == 'T':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_leftT.png")
+					elif char == 't':
+						self.object_factory.create_gui_wall(cur_position_x, cur_position_y, "wall_in_rightT.png")
 						
 					cur_position_x += 16
 
-					if cur_position_x >= (42 * 16) + 8:
+					if cur_position_x >= (40 * 16) + 8:
 						cur_position_x = 8
 						cur_position_y += 16
 			

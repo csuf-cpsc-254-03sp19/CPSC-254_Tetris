@@ -74,10 +74,12 @@ class Settings():
 				self.delta_time_accum -= self.tetronimo_timer_period
 				self.tetronimo_inc = True
 				
-			if self.tetronimo_assembly_state == 0:
-				if self.tetronimo_inc:
-					print("tetronimo is falling..")
-			elif self.tetronimo_assembly_state == 5:
+				if self.tetronimo_assembly_state == 0:
+					for key in self.tetronimos_falling:
+						cur_tetronimos_falling = self.tetronimos_falling[key]
+						cur_tetronimos_falling.drive()
+				
+			if self.tetronimo_assembly_state == 5:
 				spawn_pos_x = self.tetronimo_spawn_pos_O[0]
 				spawn_pos_y = self.tetronimo_spawn_pos_O[1]
 				

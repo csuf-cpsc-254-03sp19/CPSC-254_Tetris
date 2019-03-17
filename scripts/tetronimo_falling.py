@@ -113,3 +113,14 @@ class TetronimoFalling(GameObject):
 		cur_tetronimo_block = self.object_factory.create_tetronimo_block(
 				position_x, position_y, self.tetronimo_type)
 		self.tetronimo_blocks.append(cur_tetronimo_block)
+		
+	def drive(self):
+		self.move_blocks(0, 32)
+		
+	def move_blocks(self, delta_x, delta_y):
+		self.position_x += delta_x
+		self.position_y += delta_y
+		
+		for block in self.tetronimo_blocks:
+			block.position_x += delta_x
+			block.position_y += delta_y

@@ -42,6 +42,8 @@ class TetronimoBlock(GameObject):
 		# 6(T) - .O.   purple
 		#        OOO
 		#        ...
+		#
+		# 7(F) - n/a   grey
 		self.tetronimo_type = tetronimo_type
 		
 		# The block state of the tetronimo block.
@@ -53,3 +55,17 @@ class TetronimoBlock(GameObject):
 		# Set the correct image sprite based on the tetronimo type.
 		if self.tetronimo_type == 0:
 			self.cur_sprite_image = self.sprite_images["block_yellow.png"]
+		elif self.tetronimo_type == 1:
+			self.cur_sprite_image = self.sprite_images["block_skyblue.png"]
+		elif self.tetronimo_type == 2:
+			self.cur_sprite_image = self.sprite_images["block_blue.png"]
+		elif self.tetronimo_type == 3:
+			self.cur_sprite_image = self.sprite_images["block_orange.png"]
+		elif self.tetronimo_type == 4:
+			self.cur_sprite_image = self.sprite_images["block_green.png"]
+		elif self.tetronimo_type == 5:
+			self.cur_sprite_image = self.sprite_images["block_red.png"]
+		elif self.tetronimo_type == 6:
+			self.cur_sprite_image = self.sprite_images["block_purple.png"]
+		elif self.tetronimo_type == 7:
+			self.cur_sprite_image = self.sprite_images["block_grey.png"]

@@ -36,6 +36,12 @@ class Settings():
 		# The spawn position of the O tetronimo.
 		self.tetronimo_spawn_pos_O = (320, 48)
 		
+		# The spawn position of the I tetronimo.
+		self.tetronimo_spawn_pos_I = (320, 32)
+		
+		# The spawn position of the rest of the tetronimos.
+		self.tetronimo_spawn_pos_D = (304, 64)
+		
 		# Checks if the tetronimo_timer_cur has been incremented. Used to drive the 
 		# vertical movement of the tetronimos and the tetronimo game state.
 		self.tetronimo_inc = False
@@ -72,7 +78,6 @@ class Settings():
 				if self.tetronimo_inc:
 					print("tetronimo is falling..")
 			elif self.tetronimo_assembly_state == 5:
-				print("Created tetronimo.")
 				spawn_pos_x = self.tetronimo_spawn_pos_O[0]
 				spawn_pos_y = self.tetronimo_spawn_pos_O[1]
 				

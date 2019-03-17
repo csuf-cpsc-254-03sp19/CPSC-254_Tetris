@@ -27,13 +27,13 @@ class TetronimoFalling(GameObject):
 		#        ....  ..O.  OOOO  .O..
 		#        ....  ..O.  ....  .O..
 		#
-		# 2(L) - O..   .OO   ...   .O.
-		#        OOO   .O.   OOO   .O.
-		#        ...   .O.   ..O   OO.
-		#
-		# 3(J) - ..O   .O.   ...   OO.
+		# 2(J) - ..O   .O.   ...   OO.
 		#        OOO   .O.   OOO   .O.
 		#        ...   .OO   O..   .O.
+		#
+		# 3(L) - O..   .OO   ...   .O.
+		#        OOO   .O.   OOO   .O.
+		#        ...   .O.   ..O   OO.
 		#
 		# 4(S) - .OO   O..   .OO   O..
 		#        OO.   OO.   OO.   OO.
@@ -67,19 +67,49 @@ class TetronimoFalling(GameObject):
 		
 	def create_tetronimo_blocks(self):
 		if self.tetronimo_type == 0:
-			# The current tetronimo block being created.
-			cur_tetronimo_block = self.object_factory.create_tetronimo_block(
-					self.position_x - 16, self.position_y - 16, self.tetronimo_type)
-			self.tetronimo_blocks.append(cur_tetronimo_block)
+			self.create_tetronimo_block(self.position_x - 16, self.position_y - 16)
+			self.create_tetronimo_block(self.position_x + 16, self.position_y - 16)
+			self.create_tetronimo_block(self.position_x - 16, self.position_y + 16)
+			self.create_tetronimo_block(self.position_x + 16, self.position_y + 16)
 			
-			cur_tetronimo_block = self.object_factory.create_tetronimo_block(
-					self.position_x + 16, self.position_y - 16, self.tetronimo_type)
-			self.tetronimo_blocks.append(cur_tetronimo_block)
+		elif self.tetronimo_type == 1:
+			self.create_tetronimo_block(self.position_x - 48, self.position_y + 32)
+			self.create_tetronimo_block(self.position_x - 16, self.position_y + 32)
+			self.create_tetronimo_block(self.position_x + 16, self.position_y + 32)
+			self.create_tetronimo_block(self.position_x + 48, self.position_y + 32)
 			
-			cur_tetronimo_block = self.object_factory.create_tetronimo_block(
-					self.position_x - 16, self.position_y + 16, self.tetronimo_type)
-			self.tetronimo_blocks.append(cur_tetronimo_block)
+		elif self.tetronimo_type == 2:
+			self.create_tetronimo_block(self.position_x, self.position_y)
+			self.create_tetronimo_block(self.position_x - 32, self.position_y)
+			self.create_tetronimo_block(self.position_x + 32, self.position_y)
+			self.create_tetronimo_block(self.position_x - 32, self.position_y - 32)
+		
+		elif self.tetronimo_type == 3:
+			self.create_tetronimo_block(self.position_x, self.position_y)
+			self.create_tetronimo_block(self.position_x - 32, self.position_y)
+			self.create_tetronimo_block(self.position_x + 32, self.position_y)
+			self.create_tetronimo_block(self.position_x + 32, self.position_y - 32)
 			
-			cur_tetronimo_block = self.object_factory.create_tetronimo_block(
-					self.position_x + 16, self.position_y + 16, self.tetronimo_type)
-			self.tetronimo_blocks.append(cur_tetronimo_block)
+		elif self.tetronimo_type == 4:
+			self.create_tetronimo_block(self.position_x, self.position_y)
+			self.create_tetronimo_block(self.position_x, self.position_y - 32)
+			self.create_tetronimo_block(self.position_x + 32, self.position_y - 32)
+			self.create_tetronimo_block(self.position_x - 32, self.position_y)
+			
+		elif self.tetronimo_type == 5:
+			self.create_tetronimo_block(self.position_x, self.position_y)
+			self.create_tetronimo_block(self.position_x, self.position_y - 32)
+			self.create_tetronimo_block(self.position_x - 32, self.position_y - 32)
+			self.create_tetronimo_block(self.position_x + 32, self.position_y)
+			
+		elif self.tetronimo_type == 6:
+			self.create_tetronimo_block(self.position_x, self.position_y)
+			self.create_tetronimo_block(self.position_x - 32, self.position_y)
+			self.create_tetronimo_block(self.position_x + 32, self.position_y)
+			self.create_tetronimo_block(self.position_x, self.position_y - 32)
+			
+	def create_tetronimo_block(self, position_x, position_y):
+		# The current tetronimo block being created.
+		cur_tetronimo_block = self.object_factory.create_tetronimo_block(
+				position_x, position_y, self.tetronimo_type)
+		self.tetronimo_blocks.append(cur_tetronimo_block)

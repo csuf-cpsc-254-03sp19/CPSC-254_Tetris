@@ -4,6 +4,7 @@ from game_object import GameObject
 from input_manager import InputManager
 from sprite_image import SpriteImage
 from object_factory import ObjectFactory
+from settings import Settings
 
 """The primary game system that is the skeleton of the entire game. It contains the setup functions as well as the main game loop and collision detection functions."""
 class GameSystem:
@@ -13,6 +14,9 @@ class GameSystem:
 		
 		# Checks if the game is currently active.
 		self.is_active = True
+		
+		# The current time elapsed in milliseconds.
+		self.delta_time = 0.0
 		
 		# The pygame clock for limiting the framerate.
 		self.pygame_clock = None
@@ -26,8 +30,24 @@ class GameSystem:
 		# The game object factory for creating the game objects.
 		self.object_factory = None
 		
+		# The settings object for managing the gameplay code.
+		self.settings = None
+		
 		# The game objects for the game. Keys are the game object ids.
 		self.game_objects = {}
+		
+		# The test object references.
+		self.test_objects = {}
+		
+		# The GUI tile objects.
+		self.gui_tile_objects = {}
+		
+		# The GUI text objects.
+		self.gui_text_objects = {}
+		
+		# The tetronimos falling. This is updated every frame from objects gathered from 
+		# the game_objects dictionary.
+		self.tetronimos_falling = {}
 		
 		# The pygame sprite images.
 		self.pygame_sprites = {}
@@ -35,9 +55,18 @@ class GameSystem:
 		# The fonts for the text boxes.
 		self.fonts = {}
 		
+		# Create the settings object.
+		self.settings = Settings()
+		
 		# Create the game object factory.
 		self.object_factory = ObjectFactory(self.game_objects, self.pygame_sprites, 
 				self.fonts)
+				
+		# Attach all the objects to each other.
+		self.settings.object_factory = self.object_factory
+		self.settings.tetronimos_falling = self.tetronimos_falling
+		
+		self.object_factory.settings = self.settings
 		
 	def start_program(self):
 		"""Starts off the program, initializing pygame and loading all the
@@ -71,6 +100,14 @@ class GameSystem:
 		self.load_sprite(image_folder_url, "wall_in_leftT.png")
 		self.load_sprite(image_folder_url, "wall_in_rightT.png")
 		self.load_sprite(image_folder_url, "wall_out_center.png")
+		self.load_sprite(image_folder_url, "block_yellow.png")
+		self.load_sprite(image_folder_url, "block_skyblue.png")
+		self.load_sprite(image_folder_url, "block_orange.png")
+		self.load_sprite(image_folder_url, "block_blue.png")
+		self.load_sprite(image_folder_url, "block_green.png")
+		self.load_sprite(image_folder_url, "block_red.png")
+		self.load_sprite(image_folder_url, "block_purple.png")
+		self.load_sprite(image_folder_url, "block_grey.png")
 		
 	def load_sprite(self, image_folder_url, cur_sprite_image_name):
 		self.pygame_sprites[cur_sprite_image_name] = pygame.image.load( \
@@ -135,6 +172,9 @@ class GameSystem:
 		text = "SCORE:"
 		self.object_factory.create_text_box(565, 110, text, "PressStart2P-small", 
 				color, False)
+				
+		self.settings.game_state = 0
+		self.settings.reset_tetronimo_assembly()
 		
 	def load_map_gameplay(self):
 		with open("map_gameplay.txt", "r") as in_file:
@@ -205,6 +245,7 @@ class GameSystem:
 		while self.is_active:
 			# Manage the frame rate to 60 fps.
 			self.pygame_clock.tick(60)
+			self.delta_time = self.pygame_clock.get_time()
 
 			# Check the keyboard input events.
 			self.input_manager.check_events()
@@ -213,13 +254,18 @@ class GameSystem:
 			if self.input_manager.pressed_q:
 				self.is_active = False
 			else:
+				# Update the game state.
+				self.gather_objects()
+				self.settings.update(self.delta_time)
 				self.collision_detection()
 				self.render_objects()
 				
 		self.clean_up()
 			
 	def collision_detection(self):
-		print("Collision detection.")
+		# TODO: For now.
+		if self.settings.game_state == 1:
+			print("Collision detection.")
 		
 	def render_objects(self):
 		"""Render all the game objects to the screen."""
@@ -256,6 +302,31 @@ class GameSystem:
 				
 		# Swap the backbuffer.
 		pygame.display.flip()
+		
+	def gather_objects(self):
+		# Clear all the previous game object references.
+		self.test_objects.clear()
+		self.gui_tile_objects.clear()
+		self.gui_text_objects.clear()
+		self.tetronimos_falling.clear()
+		
+		# Gather all the game objects and place them in their proper dictionaries.
+		for key in self.game_objects:
+			# The current game object being examined.
+			cur_game_obj = self.game_objects[key]
+			
+			# The current game object's id.
+			object_id = cur_game_obj.object_id
+			
+			# Check the tag to tell which dictionary to put the object reference in.
+			if cur_game_obj.tag == 0:
+				self.test_objects[object_id] = cur_game_obj
+			elif cur_game_obj.tag == 1:
+				self.gui_tile_objects[object_id] = cur_game_obj
+			elif cur_game_obj.tag == 2:
+				self.gui_text_objects[object_id] = cur_game_obj
+			elif cur_game_obj.tag == 3:
+				self.tetronimos_falling[object_id] = cur_game_obj
 	
 	@staticmethod
 	def clean_up():

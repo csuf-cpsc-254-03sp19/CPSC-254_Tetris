@@ -6,9 +6,9 @@ from sprite_image import SpriteImage
 
 """The primary game object abstract class. All game object types are inherited from  this class. It contains a dictionary of sprite images, a position in 2D world space, and a collision box. The selection of the default sprite must be chosen by the inherited constuctor."""
 class TextBox(GameObject):
-	def __init__(self, object_id, position_x, position_y, text, font, color, \
+	def __init__(self, object_id, tag, position_x, position_y, text, font, color, \
 			align_bottom_left, collision_box, sprite_images):
-		super(TextBox, self).__init__(object_id, position_x, position_y, collision_box, sprite_images)
+		super(TextBox, self).__init__(object_id, tag, position_x, position_y, collision_box, sprite_images)
 		"""Initialized the game object."""
 		
 		# Checks if the text box needs to be aligned to the bottom left.

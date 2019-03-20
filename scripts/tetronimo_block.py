@@ -6,8 +6,10 @@ from game_object import GameObject
 """The tetronimo block class. Created every time a new tetronimo falling is created."""
 class TetronimoBlock(GameObject):
 	def __init__(self, object_id, tag, position_x, position_y, tetronimo_type, collision_box, sprite_images):
-		super(TetronimoBlock, self).__init__(object_id, tag, position_x, position_y, collision_box, sprite_images)
 		"""Initialized the tetronimo block game object."""
+	
+		# Call the inherited class constructor.
+		super(TetronimoBlock, self).__init__(object_id, tag, position_x, position_y, collision_box, sprite_images)
 		
 		# The tetronimo type. Use the number, not the character in parenthesis.
 		# Different tetronimo types are different colors.

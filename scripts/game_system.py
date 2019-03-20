@@ -80,6 +80,8 @@ class GameSystem:
 		self.main_loop()
 		
 	def load_sprites(self):
+		"""Loads all of the sprites from the images folder."""
+		
 		# The image folder url.
 		image_folder_url = "../images/"
 		
@@ -110,6 +112,7 @@ class GameSystem:
 		self.load_sprite(image_folder_url, "block_grey.png")
 		
 	def load_sprite(self, image_folder_url, cur_sprite_image_name):
+		"""Loads a single sprite from the images folder."""
 		self.pygame_sprites[cur_sprite_image_name] = pygame.image.load( \
 			image_folder_url + cur_sprite_image_name)
 	
@@ -148,6 +151,8 @@ class GameSystem:
 		pygame.display.set_caption("Tetris")
 		
 	def setup_classic_game(self):
+		"""Sets up a classic game of tetris."""
+		
 		# Load the gameplay game map.
 		self.load_map_gameplay()
 		
@@ -177,6 +182,9 @@ class GameSystem:
 		self.settings.reset_tetronimo_assembly()
 		
 	def load_map_gameplay(self):
+		"""Loads the game map for the classic tetris game."""
+		
+		# Use with to ensure that the file is read entirely.
 		with open("map_gameplay.txt", "r") as in_file:
 			# The text containing all the characters for the map objects.
 			map_text = in_file.read()
@@ -240,6 +248,8 @@ class GameSystem:
 			
 		
 	def main_loop(self):
+		"""The main loop for updating the game objects and updating all of the engine components."""
+		
 		# The entrance to the main loop. The game will continue to loop until 
 		# is_active is set to false.
 		while self.is_active:
@@ -263,6 +273,8 @@ class GameSystem:
 		self.clean_up()
 			
 	def collision_detection(self):
+		"""Manages the collision detection between certain objects."""
+		
 		# TODO: For now.
 		if self.settings.game_state == 1:
 			print("Collision detection.")
@@ -304,6 +316,8 @@ class GameSystem:
 		pygame.display.flip()
 		
 	def gather_objects(self):
+		"""Gathers all of the game objects by tag type for processing."""
+		
 		# Clear all the previous game object references.
 		self.test_objects.clear()
 		self.gui_tile_objects.clear()
@@ -330,6 +344,7 @@ class GameSystem:
 	
 	@staticmethod
 	def clean_up():
+		"""Cleans up the game system after it is finished working."""
 		# Exit pygame.
 		pygame.quit()
 

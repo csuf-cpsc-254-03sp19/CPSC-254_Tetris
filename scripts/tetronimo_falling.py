@@ -7,11 +7,11 @@ from game_object import GameObject
 class TetronimoFalling(GameObject):
 	def __init__(self, object_id, tag, position_x, position_y, tetronimo_type, \
 			object_factory, settings, collision_box, sprite_images):
+		"""Initialized the tetronimo falling game object."""
 			
+		# Call the inherited class constructor.
 		super(TetronimoFalling, self).__init__(object_id, tag, position_x, position_y, \
 				collision_box, sprite_images)
-				
-		"""Initialized the tetronimo falling game object."""
 		
 		# The tetronimo type. Use the number, not the character in parenthesis.
 		# Rotation states are also shown. This follows the SRS Tetris format.
@@ -66,6 +66,10 @@ class TetronimoFalling(GameObject):
 		self.create_tetronimo_blocks()
 		
 	def create_tetronimo_blocks(self):
+		"""Create the tetronimo blocks for the falling tetronimo."""
+		
+		# Different types of tetronimo blocks will have different block positions and 
+		# colors.
 		if self.tetronimo_type == 0:
 			self.create_tetronimo_block(self.position_x - 16, self.position_y - 16)
 			self.create_tetronimo_block(self.position_x + 16, self.position_y - 16)
@@ -109,18 +113,24 @@ class TetronimoFalling(GameObject):
 			self.create_tetronimo_block(self.position_x, self.position_y - 32)
 			
 	def create_tetronimo_block(self, position_x, position_y):
+		"""Create a single tetronimo block."""
+		
 		# The current tetronimo block being created.
 		cur_tetronimo_block = self.object_factory.create_tetronimo_block(
 				position_x, position_y, self.tetronimo_type)
 		self.tetronimo_blocks.append(cur_tetronimo_block)
 		
 	def drive(self):
+		"""Move the blocks that belong to this tetronimo."""
 		self.move_blocks(0, 32)
 		
 	def move_blocks(self, delta_x, delta_y):
+		"""Change the x or y position by a certain amount."""
 		self.position_x += delta_x
 		self.position_y += delta_y
 		
+		# Update the x and y position for the tetronimo blocks that belong to this 
+		# tetronimo.
 		for block in self.tetronimo_blocks:
 			block.position_x += delta_x
 			block.position_y += delta_y

@@ -13,6 +13,9 @@ class TetronimoFalling(GameObject):
 		super(TetronimoFalling, self).__init__(object_id, tag, position_x, position_y, \
 				collision_box, sprite_images)
 		
+		# Checks if the tetronimo is falling.
+		self.is_falling = True
+		
 		# The tetronimo type. Use the number, not the character in parenthesis.
 		# Rotation states are also shown. This follows the SRS Tetris format.
 		#------------------------------
@@ -117,12 +120,30 @@ class TetronimoFalling(GameObject):
 		
 		# The current tetronimo block being created.
 		cur_tetronimo_block = self.object_factory.create_tetronimo_block(
-				position_x, position_y, self.tetronimo_type)
+				position_x, position_y, self.tetronimo_type, self)
 		self.tetronimo_blocks.append(cur_tetronimo_block)
 		
+	def update(self, delta_time):
+		"""Updates the falling tetronimo object."""
+		
+		# Update all the tetronimo blocks that belong to this falling tetronimo object.
+		for block in self.tetronimo_blocks:
+			block.update(delta_time)
+			
 	def drive(self):
-		"""Move the blocks that belong to this tetronimo."""
-		self.move_blocks(0, 32)
+		"""Move the blocks that belong to this tetronimo if not at the bottom of the screen."""
+		if not self.is_falling:
+			# Destroy the falling tetronimo. This will not destroy the blocks that make 
+			# the tetronimo, and the blocks will be landed.
+			self.marked_for_deletion = True
+			
+			self.settings.tetronimo_assembly_state = 1
+			
+			# Set the blocks to the landed state.
+			for block in self.tetronimo_blocks:
+				block.block_state = 1
+		else:
+			self.move_blocks(0, 32)
 		
 	def move_blocks(self, delta_x, delta_y):
 		"""Change the x or y position by a certain amount."""

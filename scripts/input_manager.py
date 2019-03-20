@@ -23,7 +23,7 @@ class InputManager:
 
 			# The quit, keydown and keyup events.
 			if event.type == pygame.QUIT:
-				self.game_system.is_running = False
+				self.game_system.is_active = False
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_RIGHT:
 					self.pressed_right = True

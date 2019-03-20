@@ -5,7 +5,7 @@ from game_object import GameObject
 
 """The tetronimo block class. Created every time a new tetronimo falling is created."""
 class TetronimoBlock(GameObject):
-	def __init__(self, object_id, tag, position_x, position_y, tetronimo_type, collision_box, sprite_images):
+	def __init__(self, object_id, tag, position_x, position_y, tetronimo_type, owner, settings, collision_box, sprite_images):
 		"""Initialized the tetronimo block game object."""
 	
 		# Call the inherited class constructor.
@@ -54,6 +54,13 @@ class TetronimoBlock(GameObject):
 		# 2 - Frozen.
 		self.block_state = 0
 		
+		# A reference to the owner that owns this tetronimo block. When landed, the block
+		# will no longer use an owner.
+		self.owner = owner
+		
+		# A reference to the settings object.
+		self.settings = settings
+		
 		# Set the correct image sprite based on the tetronimo type.
 		if self.tetronimo_type == 0:
 			self.cur_sprite_image = self.sprite_images["block_yellow.png"]
@@ -70,4 +77,27 @@ class TetronimoBlock(GameObject):
 		elif self.tetronimo_type == 6:
 			self.cur_sprite_image = self.sprite_images["block_purple.png"]
 		elif self.tetronimo_type == 7:
+			self.cur_sprite_image = self.sprite_images["block_grey.png"]
+			
+	def update(self, delta_time):
+		"""Updates the tetronimo block object."""
+		
+		# If in the block state of falling, check to see if the block is colliding with 
+		# the bottom of the screen. If so, change the falling tetronimo to not falling.
+		if self.block_state == 0:
+			# Check to see if the tetronimo block is at the container bound bottom.
+			
+			# Prevent the other blocks that haven't reached the bottom from making the 
+			# tetronimo continue to fall.
+			if self.owner.is_falling:
+			
+				# If the block is at the bottom of the screen, make the owner stop 
+				# falling.
+				if self.position_y + 16 >= self.settings.tetronimo_container_bounds[3]:
+					self.owner.is_falling = False
+				else:
+					self.owner.is_falling = True
+				
+		if self.block_state == 1:
+			# TODO: This is just for debugging purposes. Remove once the game is finished.
 			self.cur_sprite_image = self.sprite_images["block_grey.png"]

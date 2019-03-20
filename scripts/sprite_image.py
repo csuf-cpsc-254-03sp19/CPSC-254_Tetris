@@ -6,7 +6,6 @@ from pygame.sprite import Sprite
 class SpriteImage():
 	def __init__(self, image_layer, image):
 		"""Initialized the sprite image."""
-		print("Sprite image created.")
 		
 		# The image layer for the painter's algorithm.
 		self.image_layer = image_layer

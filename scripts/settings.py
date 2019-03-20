@@ -1,4 +1,5 @@
 import pygame
+import random
 
 """The settings object for the game. It contains all the scoring and high score information, as well as the game state and the tetronimo assembly."""
 class Settings():
@@ -22,16 +23,19 @@ class Settings():
 		# This timer accumulates once
 		self.tetronimo_timer_cur = 0
 		
+		# The type of the next tetronimo being created.
+		self.next_tetronimo_type = 0
+		
 		# The period at which the tetronimo timer accumulates frames. In milliseconds.
-		self.tetronimo_timer_period = 1000.0
+		self.tetronimo_timer_period = 100.0
 		
 		# The time accumulated, in milliseconds. When filled up larger than or equal to 
 		# tetronimo_timer_period, the tetronimo_timer_cur will increment and this will be 
 		# reset to 0.0.
 		self.delta_time_accum = 0.0
 		
-		# The bounds of the tetronimo container. x, y, width, height.
-		self.tetronimo_container_bounds = (160, 480, 16, 720)
+		# The bounds of the tetronimo container. left, right, top, bottom.
+		self.tetronimo_container_bounds = (160, 480, 16, 784)
 		
 		# The spawn position of the O tetronimo.
 		self.tetronimo_spawn_pos_O = (320, 48)
@@ -55,8 +59,11 @@ class Settings():
 		# A reference to the object factory.
 		self.object_factory = None
 		
+		# Set up the random seed.
+		random.seed()
+		
 	def reset_tetronimo_assembly(self):
-		self.tetronimo_timer_period = 1000.0
+		self.tetronimo_timer_period = 100.0
 		self.tetronimo_timer_cur = 0.0
 		self.delta_time_accum = 0.0
 		self.tetronimo_inc = False
@@ -65,6 +72,7 @@ class Settings():
 	def update(self, delta_time):
 		"""Updates the settings and the primary game mechanics."""
 		
+		# Game state for when the game is playing classic mode.
 		if self.game_state == 0:
 			self.delta_time_accum += delta_time
 			
@@ -74,14 +82,36 @@ class Settings():
 				self.delta_time_accum -= self.tetronimo_timer_period
 				self.tetronimo_inc = True
 				
+				# If in assembly state zero, drive the falling tetronimo pieces.
 				if self.tetronimo_assembly_state == 0:
 					for key in self.tetronimos_falling:
 						cur_tetronimos_falling = self.tetronimos_falling[key]
 						cur_tetronimos_falling.drive()
+						
+				# If in assembly state has fallen, create a new tetronimo.
+				elif self.tetronimo_assembly_state == 1:
+					self.tetronimo_assembly_state = 5
 				
+				
+			# Game state for when the tetronimo is first being created.
 			if self.tetronimo_assembly_state == 5:
-				spawn_pos_x = self.tetronimo_spawn_pos_O[0]
-				spawn_pos_y = self.tetronimo_spawn_pos_O[1]
+			
+				# Choose the next tetronimo type randomly.
+				self.next_tetronimo_type = random.randint(0, 6)
 				
-				self.object_factory.create_tetronimo_falling(spawn_pos_x, spawn_pos_y, 0)
+				# The tetronimo spawn position.
+				spawn_pos_x = self.tetronimo_spawn_pos_D[0]
+				spawn_pos_y = self.tetronimo_spawn_pos_D[1]
+				
+				if self.next_tetronimo_type == 0:
+					spawn_pos_x = self.tetronimo_spawn_pos_O[0]
+					spawn_pos_y = self.tetronimo_spawn_pos_O[1]
+				elif self.next_tetronimo_type == 1:
+					spawn_pos_x = self.tetronimo_spawn_pos_I[0]
+					spawn_pos_y = self.tetronimo_spawn_pos_I[1]
+				
+				# Create the initial tetronimo.
+				self.object_factory.create_tetronimo_falling(spawn_pos_x, spawn_pos_y, \
+						self.next_tetronimo_type)
+						
 				self.tetronimo_assembly_state = 0

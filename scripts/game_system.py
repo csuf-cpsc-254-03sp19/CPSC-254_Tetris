@@ -265,13 +265,51 @@ class GameSystem:
 				self.is_active = False
 			else:
 				# Update the game state.
+				
+				# Gather the game object types.
 				self.gather_objects()
+				
+				# Update the game objects.
 				self.settings.update(self.delta_time)
+				
+				for key in self.tetronimos_falling:
+					# The current game object being updated.
+					cur_object = self.tetronimos_falling[key]
+					cur_object.update(self.delta_time)
+					
+				self.destroy_objects_marked_for_deletion()
+				
+				# Update the collision detection.
 				self.collision_detection()
+				self.destroy_objects_marked_for_deletion()
+				self.gather_objects()
+				
+				# Render the game objects.
 				self.render_objects()
 				
+		# Clean up the game engine when finished.
 		self.clean_up()
+		
+	def destroy_objects_marked_for_deletion(self):
+		"""Destroys the game objects that are marked for deletion."""
+		
+		# The empty keys of the dictionary.
+		empty_keys = []
+		
+		for key in self.game_objects:
+		    # The current game object being deleted.
+			cur_object = self.game_objects[key]
 			
+			# If marked for deletion, remove the game object from the game object 
+			# dictionary.
+			if cur_object.marked_for_deletion:
+				self.game_objects[key] = None
+				empty_keys.append(key)
+				
+		# Remove the empty keys.
+		for key in empty_keys:
+			self.game_objects.pop(key, None)
+		
 	def collision_detection(self):
 		"""Manages the collision detection between certain objects."""
 		

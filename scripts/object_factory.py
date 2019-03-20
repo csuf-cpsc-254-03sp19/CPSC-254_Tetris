@@ -101,7 +101,7 @@ class ObjectFactory():
 		
 		return cur_object
 		
-	def create_tetronimo_block(self, position_x, position_y, tetronimo_type):
+	def create_tetronimo_block(self, position_x, position_y, tetronimo_type, owner):
 		"""Creates the tetronimo falling."""
 		
 		# The sprites for the tetronimo block.
@@ -144,7 +144,7 @@ class ObjectFactory():
 		
 		# The tetronimo falling being created.
 		cur_object = TetronimoBlock(self.cur_game_obj_id, 4, position_x, position_y, \
-				tetronimo_type, None, sprites)
+				tetronimo_type, owner, self.settings, None, sprites)
 		
 		self.game_objects[self.cur_game_obj_id] = cur_object
 		

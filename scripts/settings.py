@@ -27,7 +27,13 @@ class Settings():
 		self.next_tetronimo_type = 0
 		
 		# The period at which the tetronimo timer accumulates frames. In milliseconds.
-		self.tetronimo_timer_period = 100.0
+		self.tetronimo_timer_period = 1000.0
+		
+		# The minimum period for the tetronimo to fall.
+		self.tetronimo_timer_min_period = 50.0
+		
+		# The cache for the tetronimo time period.
+		self.tetronimo_timer_period_cache = self.tetronimo_timer_period
 		
 		# The time accumulated, in milliseconds. When filled up larger than or equal to 
 		# tetronimo_timer_period, the tetronimo_timer_cur will increment and this will be 
@@ -59,11 +65,15 @@ class Settings():
 		# A reference to the object factory.
 		self.object_factory = None
 		
+		# The input manager for checking the user input.
+		self.input_manager = None
+		
 		# Set up the random seed.
 		random.seed()
 		
 	def reset_tetronimo_assembly(self):
-		self.tetronimo_timer_period = 100.0
+		self.tetronimo_timer_period = 1000.0
+		self.tetronimo_timer_period_cache = self.tetronimo_timer_period
 		self.tetronimo_timer_cur = 0.0
 		self.delta_time_accum = 0.0
 		self.tetronimo_inc = False
@@ -74,10 +84,25 @@ class Settings():
 		
 		# Game state for when the game is playing classic mode.
 		if self.game_state == 0:
+		
+			# Check if the down key is pressed while a piece is falling. If so, speed it 
+			# up.
+			if self.tetronimo_assembly_state == 0:
+				if not self.tetronimo_timer_period == self.tetronimo_timer_min_period:
+					if self.input_manager.pressed_down:
+						self.tetronimo_timer_period_cache = self.tetronimo_timer_period
+						self.tetronimo_timer_period = self.tetronimo_timer_min_period
+						self.tetronimo_timer_cur = 0.0
+						self.delta_time_accum = 0.0
+				else:
+					if not self.input_manager.pressed_down:
+						self.tetronimo_timer_period = self.tetronimo_timer_period_cache
+						
 			self.delta_time_accum += delta_time
 			
 			self.tetronimo_inc = False
 			
+			# Update the tetronimo after the general time period has elapsed.
 			while self.delta_time_accum >= self.tetronimo_timer_period:
 				self.delta_time_accum -= self.tetronimo_timer_period
 				self.tetronimo_inc = True

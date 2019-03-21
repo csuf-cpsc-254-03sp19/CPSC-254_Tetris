@@ -28,6 +28,9 @@ class ObjectFactory():
 		# A reference to the settings.
 		self.settings = None
 		
+		# A reference to the input manager.
+		self.input_manager = None
+		
 	def create_test_obj(self, position_x, position_y, obj_type):
 		"""Creates the test object."""
 		debug_sprites = {}
@@ -93,7 +96,7 @@ class ObjectFactory():
 		
 		# The tetronimo falling being created.
 		cur_object = TetronimoFalling(self.cur_game_obj_id, 3, position_x, position_y, \
-				tetronimo_type, self, self.settings, None, None)
+				tetronimo_type, self, self.settings, self.input_manager, None, None)
 		
 		self.game_objects[self.cur_game_obj_id] = cur_object
 		

@@ -65,8 +65,10 @@ class GameSystem:
 		# Attach all the objects to each other.
 		self.settings.object_factory = self.object_factory
 		self.settings.tetronimos_falling = self.tetronimos_falling
+		self.settings.input_manager = self.input_manager
 		
 		self.object_factory.settings = self.settings
+		self.object_factory.input_manager = self.input_manager
 		
 	def start_program(self):
 		"""Starts off the program, initializing pygame and loading all the

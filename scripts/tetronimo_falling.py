@@ -6,7 +6,7 @@ from game_object import GameObject
 """The falling tetronimo class. Created every time a new tetronimo must fall from the top of the screen."""
 class TetronimoFalling(GameObject):
 	def __init__(self, object_id, tag, position_x, position_y, tetronimo_type, \
-			object_factory, settings, collision_box, sprite_images):
+			object_factory, settings, input_manager, collision_box, sprite_images):
 		"""Initialized the tetronimo falling game object."""
 			
 		# Call the inherited class constructor.
@@ -15,6 +15,18 @@ class TetronimoFalling(GameObject):
 		
 		# Checks if the tetronimo is falling.
 		self.is_falling = True
+		
+		# Checks if the tetronimo can move left.
+		self.can_move_left = True
+		
+		# Checks if the tetronimo can move right.
+		self.can_move_right = True
+		
+		# Checks if the left key was pressed.
+		self.pressed_left = False
+		
+		# Checks if the right key was pressed.
+		self.pressed_right = False
 		
 		# The tetronimo type. Use the number, not the character in parenthesis.
 		# Rotation states are also shown. This follows the SRS Tetris format.
@@ -55,6 +67,12 @@ class TetronimoFalling(GameObject):
 		# states.
 		self.rotation_state = 0
 		
+		# The current horizontal frame for horizontal movement.
+		self.cur_horizontal_frame = 0
+		
+		# The maximum horizontal frame for horizontal movement.
+		self.max_horizontal_frame = 8
+		
 		# A list of all the tetronimo blocks that belong to this game object.
 		self.tetronimo_blocks = []
 		
@@ -64,6 +82,9 @@ class TetronimoFalling(GameObject):
 		
 		# A reference to the game settings.
 		self.settings = settings
+		
+		# A reference to the input manager.
+		self.input_manager = input_manager
 		
 		# Create the tetronimo blocks that belong to this game object.
 		self.create_tetronimo_blocks()
@@ -126,9 +147,55 @@ class TetronimoFalling(GameObject):
 	def update(self, delta_time):
 		"""Updates the falling tetronimo object."""
 		
+		self.can_move_left = True
+		self.can_move_right = True
+			
 		# Update all the tetronimo blocks that belong to this falling tetronimo object.
 		for block in self.tetronimo_blocks:
 			block.update(delta_time)
+			
+		# Check if the left or right key is pressed while a piece is falling. If so, 
+		# move the piece left or right.
+		if self.settings.tetronimo_assembly_state == 0:
+			
+			# Check if pressing the left key.
+			if self.input_manager.pressed_left:
+				# Reset the movement frame if haven't pressed left previously.
+				if not self.pressed_left:
+					self.cur_horizontal_frame = self.max_horizontal_frame
+				self.pressed_left = True
+			else:
+				self.pressed_left = False
+				
+				
+			# Check if pressing the right key.
+			if self.input_manager.pressed_right:
+				# Reset the movement frame if haven't pressed left previously.
+				if not self.pressed_right:
+					self.cur_horizontal_frame = self.max_horizontal_frame
+				self.pressed_right = True
+			else:
+				self.pressed_right = False
+				
+			# Drive the tetronimo to move left if able.
+			if self.can_move_left and self.pressed_left:
+				if self.cur_horizontal_frame == self.max_horizontal_frame:
+					self.cur_horizontal_frame = 0
+					self.position_x -= 32
+					for block in self.tetronimo_blocks:
+						block.position_x -= 32
+				else:
+					self.cur_horizontal_frame += 1
+					
+			# Drive the tetronimo to move right if able.
+			if self.can_move_right and self.pressed_right:
+				if self.cur_horizontal_frame == self.max_horizontal_frame:
+					self.cur_horizontal_frame = 0
+					self.position_x += 32
+					for block in self.tetronimo_blocks:
+						block.position_x += 32
+				else:
+					self.cur_horizontal_frame += 1
 			
 	def drive(self):
 		"""Move the blocks that belong to this tetronimo if not at the bottom of the screen."""

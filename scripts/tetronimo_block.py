@@ -97,6 +97,22 @@ class TetronimoBlock(GameObject):
 					self.owner.is_falling = False
 				else:
 					self.owner.is_falling = True
+					
+			# Check if the tetronimo owner can move left.
+			if self.owner.can_move_left:
+			
+				# If the block is at the left of the screen, make the owner stop 
+				# moving left.
+				if self.position_x - 16 <= self.settings.tetronimo_container_bounds[0]:
+					self.owner.can_move_left = False
+					
+			# Check if the tetronimo owner can move right.
+			if self.owner.can_move_right:
+			
+				# If the block is at the right of the screen, make the owner stop 
+				# moving right.
+				if self.position_x + 16 >= self.settings.tetronimo_container_bounds[1]:
+					self.owner.can_move_right = False
 				
 		if self.block_state == 1:
 			# TODO: This is just for debugging purposes. Remove once the game is finished.

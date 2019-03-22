@@ -404,6 +404,41 @@ class TetronimoFalling(GameObject):
 				# position.
 				largest_y = 0 
 				
+				# First, check if the tetronimo can land on another tetronimo.
+				
+				# Checks if the tetronimo landed on another tetronimo.
+				land_on_tetronimo = False
+				
+				# The amount by which to offset the tetronimo falling so that it reaches 
+				# the bottom of the screen or on top of another tetronimo.
+				offset_amount_y = 0
+				
+				# The shortest y distance found. It will be used as the offset amount for
+				# the tetronimo.
+				shortest_y_distance = 999.0
+				
+				# First, check for the shortest distance between the owner's tetronimo 
+				# blocks and the other tetronimo blocks.
+				for cur_block in self.tetronimo_blocks:
+					for key in self.settings.tetronimo_blocks:
+						# The current tetronimo block other.
+						cur_block_other = self.settings.tetronimo_blocks[key]
+						
+						# Check if the other block has the same x coordinate as the 
+						# current block and is in the landed block state.
+						if cur_block_other.block_state == 1 and \
+								cur_block.position_x == cur_block_other.position_x:
+								
+							cur_y_distance = cur_block_other.position_y - \
+									cur_block.position_y - 32
+									
+							# If the distance is shorter than the previous distance, 
+							# update the shortest y distance.
+							if cur_y_distance < shortest_y_distance:
+								shortest_y_distance = cur_y_distance
+				
+				# Next, check if the tetronimo can also reach the bottom of the screen.
+				
 				# Get the largest y position of the tetronimo.
 				for block in self.tetronimo_blocks:
 					if block.position_y > largest_y:
@@ -411,8 +446,15 @@ class TetronimoFalling(GameObject):
 				
 				# The amount by which to offset the tetronimo falling so that it reaches 
 				# the bottom of the screen.
-				offset_amount_y = self.settings.tetronimo_container_bounds[3] - \
+				cur_y_distance = self.settings.tetronimo_container_bounds[3] - \
 						largest_y - 16
+						
+				# If the distance is shorter than the previous distance, 
+				# update the shortest y distance.
+				if cur_y_distance < shortest_y_distance:
+					shortest_y_distance = cur_y_distance
+				
+				offset_amount_y = shortest_y_distance
 				
 				self.position_y += offset_amount_y
 				

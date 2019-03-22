@@ -61,6 +61,9 @@ class TetronimoBlock(GameObject):
 		# A reference to the settings object.
 		self.settings = settings
 		
+		# A reference to the tetronimo blocks.
+		self.tetronimo_blocks = self.settings.tetronimo_blocks
+		
 		# Set the correct image sprite based on the tetronimo type.
 		if self.tetronimo_type == 0:
 			self.cur_sprite_image = self.sprite_images["block_yellow.png"]
@@ -95,6 +98,17 @@ class TetronimoBlock(GameObject):
 				# falling.
 				if self.position_y + 16 >= self.settings.tetronimo_container_bounds[3]:
 					self.owner.is_falling = False
+					
+			# Check to see if the tetronimo bloc is on top of another tetronimo block.
+			for key in self.tetronimo_blocks:
+				# The current tetronimo block being tested against.
+				cur_block = self.tetronimo_blocks[key]
+				
+				# Only check for blocks that are in the landed state.
+				if cur_block.block_state == 1:
+					if cur_block.position_y == self.position_y + 32 and \
+							cur_block.position_x == self.position_x:
+						self.owner.is_falling = False
 					
 			# Check if the tetronimo owner can move left.
 			if self.owner.can_move_left:

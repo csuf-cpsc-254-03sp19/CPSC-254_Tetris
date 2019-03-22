@@ -59,6 +59,9 @@ class Settings():
 		# A reference to the tetronimos falling.
 		self.tetronimos_falling = None
 		
+		# A reference to the tetronimo blocks.
+		self.tetronimo_blocks = None
+		
 		# A reference to the game objects.
 		self.game_objects = None
 		

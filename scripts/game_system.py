@@ -48,6 +48,10 @@ class GameSystem:
 		# the game_objects dictionary.
 		self.tetronimos_falling = {}
 		
+		# The tetronimo blocks created by the tetronimos falling. Also includes blocks 
+		# that have already landed.
+		self.tetronimo_blocks = {}
+		
 		# The pygame sprite images.
 		self.pygame_sprites = {}
 		
@@ -64,6 +68,7 @@ class GameSystem:
 		# Attach all the objects to each other.
 		self.settings.object_factory = self.object_factory
 		self.settings.tetronimos_falling = self.tetronimos_falling
+		self.settings.tetronimo_blocks = self.tetronimo_blocks
 		self.settings.input_manager = self.input_manager
 		
 		self.object_factory.settings = self.settings
@@ -361,6 +366,7 @@ class GameSystem:
 		self.gui_tile_objects.clear()
 		self.gui_text_objects.clear()
 		self.tetronimos_falling.clear()
+		self.tetronimo_blocks.clear()
 		
 		# Gather all the game objects and place them in their proper dictionaries.
 		for key in self.game_objects:
@@ -379,6 +385,8 @@ class GameSystem:
 				self.gui_text_objects[object_id] = cur_game_obj
 			elif cur_game_obj.tag == 3:
 				self.tetronimos_falling[object_id] = cur_game_obj
+			elif cur_game_obj.tag == 4:
+				self.tetronimo_blocks[object_id] = cur_game_obj
 	
 	@staticmethod
 	def clean_up():

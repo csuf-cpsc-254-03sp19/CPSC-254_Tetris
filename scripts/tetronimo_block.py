@@ -118,6 +118,18 @@ class TetronimoBlock(GameObject):
 				if self.position_x - 16 <= self.settings.tetronimo_container_bounds[0]:
 					self.owner.can_move_left = False
 					
+				# Also check if there are any other blocks to the left of this block.
+				for key in self.tetronimo_blocks:
+					# The other block being checked for.
+					cur_block_other = self.tetronimo_blocks[key]
+					
+					# Only check for blocks that have the same y position value and are 
+					# just to the left of the block.
+					if cur_block_other.position_y == self.position_y and \
+							cur_block_other.block_state == 1 and \
+							cur_block_other.position_x + 32 == self.position_x:
+						self.owner.can_move_left = False
+					
 			# Check if the tetronimo owner can move right.
 			if self.owner.can_move_right:
 			
@@ -125,6 +137,18 @@ class TetronimoBlock(GameObject):
 				# moving right.
 				if self.position_x + 16 >= self.settings.tetronimo_container_bounds[1]:
 					self.owner.can_move_right = False
+					
+				# Also check if there are any other blocks to the right of this block.
+				for key in self.tetronimo_blocks:
+					# The other block being checked for.
+					cur_block_other = self.tetronimo_blocks[key]
+					
+					# Only check for blocks that have the same y position value and are 
+					# just to the right of the block.
+					if cur_block_other.position_y == self.position_y and \
+							cur_block_other.block_state == 1 and \
+							cur_block_other.position_x - 32 == self.position_x:
+						self.owner.can_move_right = False
 			
 	def change_block_to_landed(self):
 		self.block_state = 1

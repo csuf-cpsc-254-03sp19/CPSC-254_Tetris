@@ -22,11 +22,20 @@ class TetronimoFalling(GameObject):
 		# Checks if the tetronimo can move right.
 		self.can_move_right = True
 		
+		# Checks if the tetronimo can rotate.
+		self.can_rotate = True
+		
 		# Checks if the left key was pressed.
 		self.pressed_left = False
 		
 		# Checks if the right key was pressed.
 		self.pressed_right = False
+		
+		# Checks if the rotate key was pressed.
+		self.pressed_rotate = False
+		
+		# Checks if the auto land key was pressed.
+		self.pressed_autoland = False
 		
 		# The tetronimo type. Use the number, not the character in parenthesis.
 		# Rotation states are also shown. This follows the SRS Tetris format.
@@ -42,11 +51,11 @@ class TetronimoFalling(GameObject):
 		#        ....  ..O.  OOOO  .O..
 		#        ....  ..O.  ....  .O..
 		#
-		# 2(J) - ..O   .O.   ...   OO.
+		# 2(L) - ..O   .O.   ...   OO.
 		#        OOO   .O.   OOO   .O.
 		#        ...   .OO   O..   .O.
 		#
-		# 3(L) - O..   .OO   ...   .O.
+		# 3(J) - O..   .OO   ...   .O.
 		#        OOO   .O.   OOO   .O.
 		#        ...   .O.   ..O   OO.
 		#
@@ -76,6 +85,10 @@ class TetronimoFalling(GameObject):
 		# A list of all the tetronimo blocks that belong to this game object.
 		self.tetronimo_blocks = []
 		
+		# The four rotations of the tetronimo. Contains a list of tuples for the x and y 
+		# positions of each block.
+		self.rotations = []
+		
 		# A reference to the game object factory. It is used to create the tetronimo 
 		# blocks.
 		self.object_factory = object_factory
@@ -92,49 +105,234 @@ class TetronimoFalling(GameObject):
 	def create_tetronimo_blocks(self):
 		"""Create the tetronimo blocks for the falling tetronimo."""
 		
+		# The cached x and y position of the tetronimo.
+		pos_x = self.position_x
+		pos_y = self.position_y
+			
+		# The rotation position lists of the tetronimo.
+		rotation1 = []
+		rotation2 = []
+		rotation3 = []
+		rotation4 = []
+		
 		# Different types of tetronimo blocks will have different block positions and 
 		# colors.
 		if self.tetronimo_type == 0:
-			self.create_tetronimo_block(self.position_x - 16, self.position_y - 16)
-			self.create_tetronimo_block(self.position_x + 16, self.position_y - 16)
-			self.create_tetronimo_block(self.position_x - 16, self.position_y + 16)
-			self.create_tetronimo_block(self.position_x + 16, self.position_y + 16)
+			
+			# .OO.
+			# .OO.
+			# ....
+			rotation1.append((-16, -16))
+			rotation1.append((16, -16))
+			rotation1.append((-16, 16))
+			rotation1.append((16, 16))
+			
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation1)
+			
+			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 			
 		elif self.tetronimo_type == 1:
-			self.create_tetronimo_block(self.position_x - 48, self.position_y + 32)
-			self.create_tetronimo_block(self.position_x - 16, self.position_y + 32)
-			self.create_tetronimo_block(self.position_x + 16, self.position_y + 32)
-			self.create_tetronimo_block(self.position_x + 48, self.position_y + 32)
+			
+			# 1(I) - ....  ..O.  ....  .O..
+			#        OOOO  ..O.  ....  .O..
+			#        ....  ..O.  OOOO  .O..
+			#        ....  ..O.  ....  .O..
+			rotation1.append((-48, 32))
+			rotation1.append((-16, 32))
+			rotation1.append((16, 32))
+			rotation1.append((48, 32))
+			
+			rotation2.append((16, 96))
+			rotation2.append((16, 64))
+			rotation2.append((16, 32))
+			rotation2.append((16, 0))
+			
+			rotation3.append((-48, 64))
+			rotation3.append((-16, 64))
+			rotation3.append((16, 64))
+			rotation3.append((48, 64))
+			
+			rotation4.append((-16, 96))
+			rotation4.append((-16, 64))
+			rotation4.append((-16, 32))
+			rotation4.append((-16, 0))
+			
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation2)
+			self.rotations.append(rotation3)
+			self.rotations.append(rotation4)
+			
+			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 			
 		elif self.tetronimo_type == 2:
-			self.create_tetronimo_block(self.position_x, self.position_y)
-			self.create_tetronimo_block(self.position_x - 32, self.position_y)
-			self.create_tetronimo_block(self.position_x + 32, self.position_y)
-			self.create_tetronimo_block(self.position_x - 32, self.position_y - 32)
+			
+			# 2(L) - ..O   .O.   ...   OO.
+			#        OOO   .O.   OOO   .O.
+			#        ...   .OO   O..   .O.
+			rotation1.append((0, 0))
+			rotation1.append((-32, 0))
+			rotation1.append((32, 0))
+			rotation1.append((32, -32))
+			
+			rotation2.append((0, 0))
+			rotation2.append((0, -32))
+			rotation2.append((0, 32))
+			rotation2.append((32, 32))
+			
+			rotation3.append((0, 0))
+			rotation3.append((-32, 0))
+			rotation3.append((32, 0))
+			rotation3.append((-32, 32))
+			
+			rotation4.append((0, 0))
+			rotation4.append((0, -32))
+			rotation4.append((0, 32))
+			rotation4.append((-32, -32))
+			
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation2)
+			self.rotations.append(rotation3)
+			self.rotations.append(rotation4)
+			
+			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 		
 		elif self.tetronimo_type == 3:
-			self.create_tetronimo_block(self.position_x, self.position_y)
-			self.create_tetronimo_block(self.position_x - 32, self.position_y)
-			self.create_tetronimo_block(self.position_x + 32, self.position_y)
-			self.create_tetronimo_block(self.position_x + 32, self.position_y - 32)
+			
+			# 3(J) - O..   .OO   ...   .O.
+			#        OOO   .O.   OOO   .O.
+			#        ...   .O.   ..O   OO.
+			rotation1.append((0, 0))
+			rotation1.append((-32, 0))
+			rotation1.append((32, 0))
+			rotation1.append((-32, -32))
+			
+			rotation2.append((0, 0))
+			rotation2.append((0, -32))
+			rotation2.append((0, 32))
+			rotation2.append((32, -32))
+			
+			rotation3.append((0, 0))
+			rotation3.append((-32, 0))
+			rotation3.append((32, 0))
+			rotation3.append((32, 32))
+			
+			rotation4.append((0, 0))
+			rotation4.append((0, 32))
+			rotation4.append((0, -32))
+			rotation4.append((-32, 32))
+			
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation2)
+			self.rotations.append(rotation3)
+			self.rotations.append(rotation4)
+			
+			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 			
 		elif self.tetronimo_type == 4:
-			self.create_tetronimo_block(self.position_x, self.position_y)
-			self.create_tetronimo_block(self.position_x, self.position_y - 32)
-			self.create_tetronimo_block(self.position_x + 32, self.position_y - 32)
-			self.create_tetronimo_block(self.position_x - 32, self.position_y)
+			
+			# 4(S) - .OO   O..   .OO   O..
+			#        OO.   OO.   OO.   OO.
+			#        ...   .O.   ...   .O.
+			rotation1.append((0, 0))
+			rotation1.append((0, -32))
+			rotation1.append((32, -32))
+			rotation1.append((-32, 0))
+			
+			rotation2.append((0, 0))
+			rotation2.append((-32, 0))
+			rotation2.append((-32, -32))
+			rotation2.append((0, 32))
+			
+			rotation3.append((0, 0))
+			rotation3.append((0, -32))
+			rotation3.append((32, -32))
+			rotation3.append((-32, 0))
+			
+			rotation4.append((0, 0))
+			rotation4.append((-32, 0))
+			rotation4.append((-32, -32))
+			rotation4.append((0, 32))
+			
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation2)
+			self.rotations.append(rotation3)
+			self.rotations.append(rotation4)
+			
+			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 			
 		elif self.tetronimo_type == 5:
-			self.create_tetronimo_block(self.position_x, self.position_y)
-			self.create_tetronimo_block(self.position_x, self.position_y - 32)
-			self.create_tetronimo_block(self.position_x - 32, self.position_y - 32)
-			self.create_tetronimo_block(self.position_x + 32, self.position_y)
+			
+			# 5(Z) - OO.   ..O   OO.   .O.
+			#        .OO   .OO   .OO   OO.
+			#        ...   .O.   ...   O..
+			rotation1.append((0, 0))
+			rotation1.append((0, -32))
+			rotation1.append((-32, -32))
+			rotation1.append((32, 0))
+			
+			rotation2.append((0, 0))
+			rotation2.append((0, 32))
+			rotation2.append((32, 0))
+			rotation2.append((32, -32))
+			
+			rotation3.append((0, 0))
+			rotation3.append((0, -32))
+			rotation3.append((-32, -32))
+			rotation3.append((32, 0))
+			
+			rotation4.append((0, 0))
+			rotation4.append((0, 32))
+			rotation4.append((32, 0))
+			rotation4.append((32, -32))
+			
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation2)
+			self.rotations.append(rotation3)
+			self.rotations.append(rotation4)
+			
+			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 			
 		elif self.tetronimo_type == 6:
-			self.create_tetronimo_block(self.position_x, self.position_y)
-			self.create_tetronimo_block(self.position_x - 32, self.position_y)
-			self.create_tetronimo_block(self.position_x + 32, self.position_y)
-			self.create_tetronimo_block(self.position_x, self.position_y - 32)
+			
+			# 6(T) - .O.   .O.   ...   .O.
+			#        OOO   .OO   OOO   OO.
+			#        ...   .O.   .O.   .O.
+			rotation1.append((0, 0))
+			rotation1.append((-32, 0))
+			rotation1.append((32, 0))
+			rotation1.append((0, -32))
+			
+			rotation2.append((0, 0))
+			rotation2.append((0, -32))
+			rotation2.append((0, 32))
+			rotation2.append((32, 0))
+			
+			rotation3.append((0, 0))
+			rotation3.append((-32, 0))
+			rotation3.append((32, 0))
+			rotation3.append((0, 32))
+			
+			rotation4.append((0, 0))
+			rotation4.append((0, -32))
+			rotation4.append((0, 32))
+			rotation4.append((-32, 0))
+			
+			self.rotations.append(rotation1)
+			self.rotations.append(rotation2)
+			self.rotations.append(rotation3)
+			self.rotations.append(rotation4)
+			
+			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
+			
+	def create_4_tetronimo_blocks(self, pos_x, pos_y, rotation):
+		"""Creates the 4 tetronimo blocks for the tetronimo using the first rotation."""
+		self.create_tetronimo_block(pos_x + rotation[0][0], pos_y + rotation[0][1])
+		self.create_tetronimo_block(pos_x + rotation[1][0], pos_y + rotation[1][1])
+		self.create_tetronimo_block(pos_x + rotation[2][0], pos_y + rotation[2][1])
+		self.create_tetronimo_block(pos_x + rotation[3][0], pos_y + rotation[3][1])
 			
 	def create_tetronimo_block(self, position_x, position_y):
 		"""Create a single tetronimo block."""
@@ -147,12 +345,10 @@ class TetronimoFalling(GameObject):
 	def update(self, delta_time):
 		"""Updates the falling tetronimo object."""
 		
+		self.is_falling = True
 		self.can_move_left = True
 		self.can_move_right = True
-			
-		# Update all the tetronimo blocks that belong to this falling tetronimo object.
-		for block in self.tetronimo_blocks:
-			block.update(delta_time)
+		self.can_rotate = True
 			
 		# Check if the left or right key is pressed while a piece is falling. If so, 
 		# move the piece left or right.
@@ -167,7 +363,6 @@ class TetronimoFalling(GameObject):
 			else:
 				self.pressed_left = False
 				
-				
 			# Check if pressing the right key.
 			if self.input_manager.pressed_right:
 				# Reset the movement frame if haven't pressed left previously.
@@ -176,6 +371,87 @@ class TetronimoFalling(GameObject):
 				self.pressed_right = True
 			else:
 				self.pressed_right = False
+				
+			# Check if pressing the rotate key.
+			if self.input_manager.pressed_z:
+				# If haven't rotated previously, rotate the tetronimo.
+				if not self.pressed_rotate:
+					# Increment the rotation index. If equal to 3, set it to zero.
+					if self.rotation_state < 3:
+						self.rotation_state += 1
+					else:
+						self.rotation_state = 0
+						
+					# The current rotations for the tetronimo blocks being rotated.
+					rotations = self.rotations[self.rotation_state]
+					
+					# The block index of the tetronimo block being rotated.
+					block_index = 0
+					
+					# Change the tetronimo block positions.
+					for block in self.tetronimo_blocks:
+						block.position_x = self.position_x + rotations[block_index][0]
+						block.position_y = self.position_y + rotations[block_index][1]
+						block_index += 1
+						
+				self.pressed_rotate = True
+			else:
+				self.pressed_rotate = False
+				
+			# Check if pressig the auto land key.
+			if self.input_manager.pressed_x:
+				# Get the largest block value and use that as the offset for the landing 
+				# position.
+				largest_y = 0 
+				
+				# Get the largest y position of the tetronimo.
+				for block in self.tetronimo_blocks:
+					if block.position_y > largest_y:
+						largest_y = block.position_y
+				
+				# The amount by which to offset the tetronimo falling so that it reaches 
+				# the bottom of the screen.
+				offset_amount_y = self.settings.tetronimo_container_bounds[3] - \
+						largest_y - 16
+				
+				self.position_y += offset_amount_y
+				
+				# Also update the positions of the tetronimo blocks to reach the bottom of 
+				# the game screen.
+				for block in self.tetronimo_blocks:
+					block.position_y += offset_amount_y
+					
+				self.settings.delta_time_accum = 0
+				
+				# Force the tetronimo assembly to increment.
+				self.settings.tetronimo_inc = True
+				self.is_falling = False
+				
+			# Update all the tetronimo blocks that belong to this falling tetronimo object.
+			for block in self.tetronimo_blocks:
+				block.update(delta_time)
+				
+			# The drive for moving the tetronimo or setting it into the landed state.
+			if self.settings.tetronimo_inc:
+				# If no longer falling, destroy the tetronimo.
+				if not self.is_falling:
+					# Destroy the falling tetronimo. This will not destroy the blocks that make 
+					# the tetronimo, and the blocks will be landed.
+					self.marked_for_deletion = True
+					
+					self.settings.tetronimo_assembly_state = 1
+					
+					# If moving downwards, switch over to the default speed to prevent too 
+					# many pieces from falling all at once.
+					if self.input_manager.pressed_down:
+						self.settings.tetronimo_timer_period = \
+							self.settings.tetronimo_timer_period_cache
+					
+					# Set the blocks to the landed state.
+					for block in self.tetronimo_blocks:
+						block.change_block_to_landed()
+				else:
+					self.move_blocks(0, 32)
 				
 			# Drive the tetronimo to move left if able.
 			if self.can_move_left and self.pressed_left:
@@ -196,21 +472,6 @@ class TetronimoFalling(GameObject):
 						block.position_x += 32
 				else:
 					self.cur_horizontal_frame += 1
-			
-	def drive(self):
-		"""Move the blocks that belong to this tetronimo if not at the bottom of the screen."""
-		if not self.is_falling:
-			# Destroy the falling tetronimo. This will not destroy the blocks that make 
-			# the tetronimo, and the blocks will be landed.
-			self.marked_for_deletion = True
-			
-			self.settings.tetronimo_assembly_state = 1
-			
-			# Set the blocks to the landed state.
-			for block in self.tetronimo_blocks:
-				block.block_state = 1
-		else:
-			self.move_blocks(0, 32)
 		
 	def move_blocks(self, delta_x, delta_y):
 		"""Change the x or y position by a certain amount."""

@@ -10,7 +10,6 @@ from settings import Settings
 class GameSystem:
 	def __init__(self):
 		"""Initialized the game system."""
-		print("Hello world!")
 		
 		# Checks if the game is currently active.
 		self.is_active = True
@@ -73,7 +72,6 @@ class GameSystem:
 	def start_program(self):
 		"""Starts off the program, initializing pygame and loading all the
 		sprites, sounds and fonts."""
-		print("The game has just begun.")
 		
 		self.setup_pygame()
 		self.load_sprites()

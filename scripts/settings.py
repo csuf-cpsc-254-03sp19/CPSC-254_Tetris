@@ -89,11 +89,19 @@ class Settings():
 			# up.
 			if self.tetronimo_assembly_state == 0:
 				if not self.tetronimo_timer_period == self.tetronimo_timer_min_period:
+					# Check if the down key is pressed.
 					if self.input_manager.pressed_down:
-						self.tetronimo_timer_period_cache = self.tetronimo_timer_period
-						self.tetronimo_timer_period = self.tetronimo_timer_min_period
-						self.tetronimo_timer_cur = 0.0
-						self.delta_time_accum = 0.0
+						# If auto landing, do not allow the piece to speed up.
+						if not self.input_manager.pressed_x:
+							self.tetronimo_timer_period_cache = \
+								self.tetronimo_timer_period
+							self.tetronimo_timer_period = \
+								self.tetronimo_timer_min_period
+							self.tetronimo_timer_cur = 0.0
+							self.delta_time_accum = 0.0
+						else:
+							self.tetronimo_timer_period = \
+								self.tetronimo_timer_period_cache
 				else:
 					if not self.input_manager.pressed_down:
 						self.tetronimo_timer_period = self.tetronimo_timer_period_cache
@@ -106,15 +114,9 @@ class Settings():
 			while self.delta_time_accum >= self.tetronimo_timer_period:
 				self.delta_time_accum -= self.tetronimo_timer_period
 				self.tetronimo_inc = True
-				
-				# If in assembly state zero, drive the falling tetronimo pieces.
-				if self.tetronimo_assembly_state == 0:
-					for key in self.tetronimos_falling:
-						cur_tetronimos_falling = self.tetronimos_falling[key]
-						cur_tetronimos_falling.drive()
 						
 				# If in assembly state has fallen, create a new tetronimo.
-				elif self.tetronimo_assembly_state == 1:
+				if self.tetronimo_assembly_state == 1:
 					self.tetronimo_assembly_state = 5
 				
 				

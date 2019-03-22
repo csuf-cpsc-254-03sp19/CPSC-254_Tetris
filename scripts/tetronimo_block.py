@@ -95,8 +95,6 @@ class TetronimoBlock(GameObject):
 				# falling.
 				if self.position_y + 16 >= self.settings.tetronimo_container_bounds[3]:
 					self.owner.is_falling = False
-				else:
-					self.owner.is_falling = True
 					
 			# Check if the tetronimo owner can move left.
 			if self.owner.can_move_left:
@@ -113,7 +111,7 @@ class TetronimoBlock(GameObject):
 				# moving right.
 				if self.position_x + 16 >= self.settings.tetronimo_container_bounds[1]:
 					self.owner.can_move_right = False
-				
-		if self.block_state == 1:
-			# TODO: This is just for debugging purposes. Remove once the game is finished.
-			self.cur_sprite_image = self.sprite_images["block_grey.png"]
+			
+	def change_block_to_landed(self):
+		self.block_state = 1
+		self.cur_sprite_image = self.sprite_images["block_grey.png"]

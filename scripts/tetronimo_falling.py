@@ -38,7 +38,8 @@ class TetronimoFalling(GameObject):
 		self.pressed_autoland = False
 		
 		# The tetronimo type. Use the number, not the character in parenthesis.
-		# Rotation states are also shown. This follows the SRS Tetris format.
+		# Rotation states are also shown. This follows the SRS Tetris format (except the s 
+		# and z tetronimos).
 		#------------------------------
 		# Type    R1    R2    R3    R4
 		#------------------------------
@@ -63,9 +64,9 @@ class TetronimoFalling(GameObject):
 		#        OO.   OO.   OO.   OO.
 		#        ...   .O.   ...   .O.
 		#
-		# 5(Z) - OO.   ..O   OO.   .O.
-		#        .OO   .OO   .OO   OO.
-		#        ...   .O.   ...   O..
+		# 5(Z) - OO.   ..O   OO.   ..O
+		#        .OO   .OO   .OO   .OO
+		#        ...   .O.   ...   .O.
 		#
 		# 6(T) - .O.   .O.   ...   .O.
 		#        OOO   .OO   OOO   OO.
@@ -213,6 +214,26 @@ class TetronimoFalling(GameObject):
 			rotation4.append((0, -32))
 			rotation4.append((0, 32))
 			rotation4.append((-32, -32))
+			
+			kick1.append((-32, 0, 0, 32))
+			kick1.append((32, 0, 2, 32))
+			kick1.append((32, -32, 1, -32))
+			kick1.append((32, -32, 2, 32))
+			
+			kick2.append((0, -32, 2, 32))
+			kick2.append((0, 32, 3, -32))
+			kick2.append((32, 32, 3, -32))
+			kick2.append((32, 32, 1, -32))
+			
+			kick3.append((-32, 0, 0, 32))
+			kick3.append((32, 0, 1, -32))
+			kick3.append((-32, 32, 3, -32))
+			kick3.append((-32, 32, 0, 32))
+			
+			kick4.append((0, -32, 2, 32))
+			kick4.append((0, 32, 3, -32))
+			kick4.append((-32, -32, 2, 32))
+			kick4.append((-32, -32, 0, 32))
 		
 		elif self.tetronimo_type == 3:
 			
@@ -239,6 +260,26 @@ class TetronimoFalling(GameObject):
 			rotation4.append((0, -32))
 			rotation4.append((-32, 32))
 			
+			kick1.append((-32, 0, 0, 32))
+			kick1.append((32, 0, 1, -32))
+			kick1.append((-32, -32, 0, 32))
+			kick1.append((-32, -32, 2, 32))
+			
+			kick2.append((0, -32, 3, -32))
+			kick2.append((0, 32, 2, 32))
+			kick2.append((32, -32, 3, -32))
+			kick2.append((32, -32, 1, -32))
+			
+			kick3.append((-32, 0, 0, 32))
+			kick3.append((32, 0, 1, -32))
+			kick3.append((32, 32, 3, -32))
+			kick3.append((32, 32, 1, -32))
+			
+			kick4.append((0, -32, 2, 32))
+			kick4.append((0, 32, 3, -32))
+			kick4.append((-32, 32, 3, -32))
+			kick4.append((-32, 32, 1, -32))
+			
 		elif self.tetronimo_type == 4:
 			
 			# 4(S) - .OO   O..   .OO   O..
@@ -264,11 +305,31 @@ class TetronimoFalling(GameObject):
 			rotation4.append((-32, -32))
 			rotation4.append((0, 32))
 			
+			kick1.append((-32, 0, 0, 32))
+			kick1.append((0, -32, 2, 32))
+			kick1.append((32, -32, 1, -32))
+			kick1.append((32, -32, 2, 32))
+			
+			kick2.append((-32, 0, 0, 32))
+			kick2.append((0, 32, 3, -32))
+			kick2.append((-32, -32, 0, 32))
+			kick2.append((-32, -32, 2, 32))
+			
+			kick3.append((-32, 0, 0, 32))
+			kick3.append((0, -32, 2, 32))
+			kick3.append((32, -32, 1, -32))
+			kick3.append((32, -32, 2, 32))
+			
+			kick4.append((-32, 0, 0, 32))
+			kick4.append((0, 32, 3, -32))
+			kick4.append((-32, -32, 0, 32))
+			kick4.append((-32, -32, 2, 32))
+			
 		elif self.tetronimo_type == 5:
 			
-			# 5(Z) - OO.   ..O   OO.   .O.
-			#        .OO   .OO   .OO   OO.
-			#        ...   .O.   ...   O..
+			# 5(Z) - OO.   ..O   OO.   ..O
+			#        .OO   .OO   .OO   .OO
+			#        ...   .O.   ...   .O.
 			rotation1.append((0, 0))
 			rotation1.append((0, -32))
 			rotation1.append((-32, -32))
@@ -288,6 +349,26 @@ class TetronimoFalling(GameObject):
 			rotation4.append((0, 32))
 			rotation4.append((32, 0))
 			rotation4.append((32, -32))
+			
+			kick1.append((32, 0, 1, -32))
+			kick1.append((0, -32, 2, 32))
+			kick1.append((-32, -32, 0, 32))
+			kick1.append((-32, -32, 2, 32))
+			
+			kick2.append((32, 0, 1, -32))
+			kick2.append((0, 32, 3, -32))
+			kick2.append((32, -32, 0, 32))
+			kick2.append((32, -32, 2, 32))
+			
+			kick3.append((32, 0, 1, -32))
+			kick3.append((0, -32, 2, 32))
+			kick3.append((-32, -32, 0, 32))
+			kick3.append((-32, -32, 2, 32))
+			
+			kick4.append((32, 0, 1, -32))
+			kick4.append((0, 32, 3, -32))
+			kick4.append((32, -32, 0, 32))
+			kick4.append((32, -32, 2, 32))
 			
 		elif self.tetronimo_type == 6:
 			
@@ -313,6 +394,14 @@ class TetronimoFalling(GameObject):
 			rotation4.append((0, -32))
 			rotation4.append((0, 32))
 			rotation4.append((-32, 0))
+			
+			kick1.append((32, 0, 1, -32))
+			
+			kick2.append((0, 32, 3, -32))
+			
+			kick3.append((-32, 0, 0, 32))
+			
+			kick4.append((0, -32, 1, 32))
 			
 		self.rotations.append(rotation1)
 		self.rotations.append(rotation2)
@@ -667,10 +756,10 @@ class TetronimoFalling(GameObject):
 				if cur_block_other.block_state == 1:
 				
 					# Check if the x and y coordinates are the same.
-					if kick_position_global_x >= cur_block_other.position_x - 16 and \
-						kick_position_global_x < cur_block_other.position_x + 16 and \
-						kick_position_global_y >= cur_block_other.position_y - 16 and \
-						kick_position_global_y < cur_block_other.position_y + 16:
+					if kick_position_global_x >= cur_block_other.position_x - 8 and \
+						kick_position_global_x < cur_block_other.position_x + 8 and \
+						kick_position_global_y >= cur_block_other.position_y - 8 and \
+						kick_position_global_y < cur_block_other.position_y + 8:
 						
 						print("kicked block!")
 						kicked = True
@@ -711,31 +800,28 @@ class TetronimoFalling(GameObject):
 				# Swap the wall values.
 				if kick_positive:
 					wall_value = self.settings.tetronimo_container_bounds[0]
-				else:
-					wall_value = self.settings.tetronimo_container_bounds[1]
-				
-				if kick_positive:
+					
 					for block in self.tetronimo_blocks:
 						if block.position_x <= wall_value:
 							found_collision = True
 				else:
+					wall_value = self.settings.tetronimo_container_bounds[1]
+					
 					for block in self.tetronimo_blocks:
 						if block.position_x >= wall_value:
 							found_collision = True
-			else:
-				# Swap the wall values.
+			else:	
 				if kick_positive:
-					wall_value = self.settings.tetronimo_container_bounds[3]
-				else:
 					wall_value = self.settings.tetronimo_container_bounds[2]
 					
-				if kick_positive:
-					for block in self.tetronimo_blocks:
-						if block.position_y >= wall_value:
-							found_collision = True
-				else:
 					for block in self.tetronimo_blocks:
 						if block.position_y <= wall_value:
+							found_collision = True
+				else:
+					wall_value = self.settings.tetronimo_container_bounds[3]
+					
+					for block in self.tetronimo_blocks:
+						if block.position_y >= wall_value:
 							found_collision = True
 			
 		# If a collision has been found, then the wall kick has failed. return to

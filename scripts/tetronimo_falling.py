@@ -563,7 +563,8 @@ class TetronimoFalling(GameObject):
 						# Check if the other block has the same x coordinate as the 
 						# current block and is in the landed block state.
 						if cur_block_other.block_state == 1 and \
-								cur_block.position_x == cur_block_other.position_x:
+								cur_block.position_x == cur_block_other.position_x and \
+								cur_block.position_y < cur_block_other.position_y:
 								
 							cur_y_distance = cur_block_other.position_y - \
 									cur_block.position_y - 32

@@ -127,7 +127,7 @@ class Settings():
 			if self.tetronimo_assembly_state == 5:
 			
 				# Choose the next tetronimo type randomly.
-				self.next_tetronimo_type = random.randint(0, 6)
+				self.next_tetronimo_type = random.randint(1, 1)
 				
 				# The tetronimo spawn position.
 				spawn_pos_x = self.tetronimo_spawn_pos_D[0]

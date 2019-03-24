@@ -89,6 +89,14 @@ class TetronimoFalling(GameObject):
 		# positions of each block.
 		self.rotations = []
 		
+		# The kick positions for the tetronimo for all 4 rotations. Contains tuples with 4 
+		# values:
+		# 0 - position_x,
+		# 1 - position_y,
+		# 2 - direction - 0 - left, 1 - right, 2 - up, 3 - down,
+		# 3 - kick_offset,
+		self.kick_positions = []
+		
 		# A reference to the game object factory. It is used to create the tetronimo 
 		# blocks.
 		self.object_factory = object_factory
@@ -115,6 +123,12 @@ class TetronimoFalling(GameObject):
 		rotation3 = []
 		rotation4 = []
 		
+		# The kick position arrays of the tetronimos for different rotations.
+		kick1 = []
+		kick2 = []
+		kick3 = []
+		kick4 = []
+		
 		# Different types of tetronimo blocks will have different block positions and 
 		# colors.
 		if self.tetronimo_type == 0:
@@ -127,12 +141,9 @@ class TetronimoFalling(GameObject):
 			rotation1.append((-16, 16))
 			rotation1.append((16, 16))
 			
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation1)
-			
-			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
+			rotation2 = rotation1
+			rotation3 = rotation1
+			rotation4 = rotation1
 			
 		elif self.tetronimo_type == 1:
 			
@@ -160,12 +171,23 @@ class TetronimoFalling(GameObject):
 			rotation4.append((-16, 32))
 			rotation4.append((-16, 0))
 			
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation2)
-			self.rotations.append(rotation3)
-			self.rotations.append(rotation4)
+			kick1.append((-16, 32, 0, 64))
+			kick1.append((-48, 32, 0, 32))
+			kick1.append((48, 32, 1, -32))
+			kick1.append((16, 32, 1, -64))
 			
-			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
+			kick2.append((16, 0, 2, 32))
+			kick2.append((16, 64, 3, -64))
+			kick2.append((16, 96, 3, -32))
+			
+			kick3.append((-16, 64, 0, 64))
+			kick3.append((-48, 64, 0, 32))
+			kick3.append((48, 64, 1, -32))
+			kick3.append((16, 64, 1, -64))
+			
+			kick4.append((-16, 0, 2, 32))
+			kick4.append((-16, 32, 2, 64))
+			kick4.append((-16, 96, 3, -32))
 			
 		elif self.tetronimo_type == 2:
 			
@@ -191,13 +213,6 @@ class TetronimoFalling(GameObject):
 			rotation4.append((0, -32))
 			rotation4.append((0, 32))
 			rotation4.append((-32, -32))
-			
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation2)
-			self.rotations.append(rotation3)
-			self.rotations.append(rotation4)
-			
-			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 		
 		elif self.tetronimo_type == 3:
 			
@@ -224,13 +239,6 @@ class TetronimoFalling(GameObject):
 			rotation4.append((0, -32))
 			rotation4.append((-32, 32))
 			
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation2)
-			self.rotations.append(rotation3)
-			self.rotations.append(rotation4)
-			
-			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
-			
 		elif self.tetronimo_type == 4:
 			
 			# 4(S) - .OO   O..   .OO   O..
@@ -255,13 +263,6 @@ class TetronimoFalling(GameObject):
 			rotation4.append((-32, 0))
 			rotation4.append((-32, -32))
 			rotation4.append((0, 32))
-			
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation2)
-			self.rotations.append(rotation3)
-			self.rotations.append(rotation4)
-			
-			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 			
 		elif self.tetronimo_type == 5:
 			
@@ -288,13 +289,6 @@ class TetronimoFalling(GameObject):
 			rotation4.append((32, 0))
 			rotation4.append((32, -32))
 			
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation2)
-			self.rotations.append(rotation3)
-			self.rotations.append(rotation4)
-			
-			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
-			
 		elif self.tetronimo_type == 6:
 			
 			# 6(T) - .O.   .O.   ...   .O.
@@ -320,12 +314,17 @@ class TetronimoFalling(GameObject):
 			rotation4.append((0, 32))
 			rotation4.append((-32, 0))
 			
-			self.rotations.append(rotation1)
-			self.rotations.append(rotation2)
-			self.rotations.append(rotation3)
-			self.rotations.append(rotation4)
+		self.rotations.append(rotation1)
+		self.rotations.append(rotation2)
+		self.rotations.append(rotation3)
+		self.rotations.append(rotation4)
 			
-			self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
+		self.kick_positions.append(kick1)
+		self.kick_positions.append(kick2)
+		self.kick_positions.append(kick3)
+		self.kick_positions.append(kick4)
+		
+		self.create_4_tetronimo_blocks(pos_x, pos_y, rotation1)
 			
 	def create_4_tetronimo_blocks(self, pos_x, pos_y, rotation):
 		"""Creates the 4 tetronimo blocks for the tetronimo using the first rotation."""
@@ -381,19 +380,67 @@ class TetronimoFalling(GameObject):
 						self.rotation_state += 1
 					else:
 						self.rotation_state = 0
-						
-					# The current rotations for the tetronimo blocks being rotated.
-					rotations = self.rotations[self.rotation_state]
 					
-					# The block index of the tetronimo block being rotated.
-					block_index = 0
+					# Checks if the tetronimo can rotate.
+					can_rotate = True
 					
-					# Change the tetronimo block positions.
-					for block in self.tetronimo_blocks:
-						block.position_x = self.position_x + rotations[block_index][0]
-						block.position_y = self.position_y + rotations[block_index][1]
-						block_index += 1
+					# Checks if the tetronimo was kicked.
+					kicked = False
+					
+					self.rotate_blocks()
 						
+					print("kick attempts.")
+					
+					# Before keeping a rotation, check to see if the tetronimo can 
+					# actually rotate, or if it needs to kick a wall. If not, change back 
+					# to the previous rotation.
+					for kick in self.kick_positions[self.rotation_state]:
+						# The kick direction.
+						kick_direction = kick[2]
+						
+						# The kick position in the x coordinate.
+						kick_pos_x = kick[0]
+						
+						# The kick position in the y coordinate.
+						kick_pos_y = kick[1]
+						
+						# The kick offset, in either the x or y coordinate.
+						kick_offset = kick[3]
+						
+						return_values = None
+						
+						if kick_direction == 0:
+							return_values = self.kick_tetronimo_attempt(
+								kick_pos_x, kick_pos_y, kick_offset, True, False)
+						elif kick_direction == 1:
+							return_values = self.kick_tetronimo_attempt(
+								kick_pos_x, kick_pos_y, kick_offset, True, True)
+						elif kick_direction == 2:
+							return_values = self.kick_tetronimo_attempt(
+								kick_pos_x, kick_pos_y, kick_offset, False, False)
+						elif kick_direction == 3:
+							return_values = self.kick_tetronimo_attempt(
+								kick_pos_x, kick_pos_y, kick_offset, False, True)
+								
+						can_rotate = return_values[0]
+						kicked = return_values[1]
+								
+						# If the tetronimo was kicked, exit the kicking loop.
+						if kicked or not can_rotate:
+							break
+							
+					# If the rotation failed, rotate the piece back to its original 
+					# position.
+					if not can_rotate:
+						self.rotation_state
+						# Decrement the rotation index. If equal to 0, set it to 3.
+						if self.rotation_state > 0:
+							self.rotation_state -= 1
+						else:
+							self.rotation_state = 3
+							
+						self.rotate_blocks()
+					
 				self.pressed_rotate = True
 			else:
 				self.pressed_rotate = False
@@ -525,3 +572,189 @@ class TetronimoFalling(GameObject):
 		for block in self.tetronimo_blocks:
 			block.position_x += delta_x
 			block.position_y += delta_y
+			
+	def rotate_blocks(self):
+		# The current rotations for the tetronimo blocks being rotated.
+		rotations = self.rotations[self.rotation_state]
+		
+		# The block index of the tetronimo block being rotated.
+		block_index = 0
+		
+		# Change the tetronimo block positions.
+		for block in self.tetronimo_blocks:
+			block.position_x = self.position_x + rotations[block_index][0]
+			block.position_y = self.position_y + rotations[block_index][1]
+			block_index += 1
+			
+	def check_tetronimo_block_collisions(self):
+		# Checks if a collision has been found.
+		found_collision = False
+		
+		# Check if the tetronimo is intersecting any other 
+		# tetronimos.
+		for cur_block in self.tetronimo_blocks:
+			for key in self.settings.tetronimo_blocks:
+				# The other tetronimo block being collided with.
+				cur_block_other = self.settings.tetronimo_blocks[key]
+				
+				if cur_block_other.block_state == 1 and \
+					cur_block.position_x >= cur_block_other.position_x - 16 and \
+					cur_block.position_x < cur_block_other.position_x + 16 and \
+					cur_block.position_y >= cur_block_other.position_y - 16 and \
+					cur_block.position_y < cur_block_other.position_y + 16:
+					found_collision = True
+					break;
+			if found_collision:
+				break
+		return found_collision
+		
+	def kick_tetronimo_attempt(self, kick_pos_x, kick_pos_y, kick_offset, kick_x, kick_positive):
+		"""Checks for tetronimo kicking."""
+	
+		# Check if the tetronimo can rotate.
+		can_rotate = True
+		
+		# Checks if the tetronimo was kicked.
+		kicked = False
+		
+		# The global kick position x.
+		kick_position_global_x = kick_pos_x + self.position_x
+		
+		# The global kick position y.
+		kick_position_global_y = kick_pos_y + self.position_y
+		
+		# Check if kicking on the x axis or the y axis.
+		if kick_x:
+			# The position value for the wall boundary.
+			wall_value = self.settings.tetronimo_container_bounds[1]
+			
+			if not kick_positive:
+				wall_value = self.settings.tetronimo_container_bounds[0]
+			
+			# Check if kicking the screen bounds.
+			if (not kick_positive and kick_position_global_x < wall_value) or \
+				(kick_positive and kick_position_global_x > wall_value):
+					
+				print("kicked wall!")
+				kicked = True
+				can_rotate = self.apply_kick(kick_offset, kick_x, kick_positive)
+		else:
+			# The position value for the wall boundary.
+			wall_value = self.settings.tetronimo_container_bounds[3]
+			
+			if not kick_positive:
+				wall_value = self.settings.tetronimo_container_bounds[2]
+			
+			# Check if kicking the screen bounds.
+			if (not kick_positive and kick_position_global_y < wall_value) or \
+				(kick_positive and kick_position_global_y > wall_value):
+					
+				print("kicked wall!")
+				kicked = True
+				can_rotate = self.apply_kick(kick_offset, kick_x, kick_positive)
+					
+		# Check if kicking the other blocks.
+		if not kicked:
+			print("look for blocks..")
+			# Iterate through every other tetronimo block and check for collisions with 
+			# this tetronimo's blocks.
+			for key in self.settings.tetronimo_blocks:
+			
+				# The other block being collided with.
+				cur_block_other = self.settings.tetronimo_blocks[key]
+				
+				# Only collide with blocks that are in the block_state landed.
+				if cur_block_other.block_state == 1:
+				
+					# Check if the x and y coordinates are the same.
+					if kick_position_global_x >= cur_block_other.position_x - 16 and \
+						kick_position_global_x < cur_block_other.position_x + 16 and \
+						kick_position_global_y >= cur_block_other.position_y - 16 and \
+						kick_position_global_y < cur_block_other.position_y + 16:
+						
+						print("kicked block!")
+						kicked = True
+						can_rotate = self.apply_kick(kick_offset, kick_x, kick_positive)
+						
+						if not can_rotate:
+							print("rotation failed.")
+						
+		# If it cannot rotate, then it cannot be kicked either.
+		if can_rotate == False:
+			kicked = False
+					
+		return (can_rotate, kicked)
+
+	def apply_kick(self, offset, kick_x, kick_positive):
+	
+		# Checks if the tetronimo can rotate.
+		can_rotate = True
+		
+		# Kick the blocks.
+		if kick_x:
+			for block in self.tetronimo_blocks:
+				block.position_x += offset
+			self.position_x += offset
+		else:
+			for block in self.tetronimo_blocks:
+				block.position_y += offset
+			self.position_y += offset
+		
+		# Check if the tetronimo is intersecting any other 
+		# tetronimos after kicking right.
+		found_collision = self.check_tetronimo_block_collisions()
+			
+		# Check if blocks are now outside of the screen bounds.
+		if found_collision == False:
+				
+			if kick_x:
+				# Swap the wall values.
+				if kick_positive:
+					wall_value = self.settings.tetronimo_container_bounds[0]
+				else:
+					wall_value = self.settings.tetronimo_container_bounds[1]
+				
+				if kick_positive:
+					for block in self.tetronimo_blocks:
+						if block.position_x <= wall_value:
+							found_collision = True
+				else:
+					for block in self.tetronimo_blocks:
+						if block.position_x >= wall_value:
+							found_collision = True
+			else:
+				# Swap the wall values.
+				if kick_positive:
+					wall_value = self.settings.tetronimo_container_bounds[3]
+				else:
+					wall_value = self.settings.tetronimo_container_bounds[2]
+					
+				if kick_positive:
+					for block in self.tetronimo_blocks:
+						if block.position_y >= wall_value:
+							found_collision = True
+				else:
+					for block in self.tetronimo_blocks:
+						if block.position_y <= wall_value:
+							found_collision = True
+			
+		# If a collision has been found, then the wall kick has failed. return to
+		# The previous block positions.
+		if found_collision:
+			print("cannot rotate!")
+			
+			# Kick the blocks back to their previous position.
+			if kick_x:
+				# Kick every single block that this tetronimo owns.
+				for block in self.tetronimo_blocks:
+					block.position_x -= offset
+				self.position_x -= offset
+			else:
+				# Kick every single block that this tetronimo owns.
+				for block in self.tetronimo_blocks:
+					block.position_y -= offset
+				self.position_y -= offset
+				
+			can_rotate = False
+				
+		return can_rotate

@@ -631,25 +631,26 @@ class TetronimoFalling(GameObject):
 				else:
 					self.move_blocks(0, 32)
 				
-			# Drive the tetronimo to move left if able.
-			if self.can_move_left and self.pressed_left:
-				if self.cur_horizontal_frame == self.max_horizontal_frame:
-					self.cur_horizontal_frame = 0
-					self.position_x -= 32
-					for block in self.tetronimo_blocks:
-						block.position_x -= 32
-				else:
-					self.cur_horizontal_frame += 1
-					
-			# Drive the tetronimo to move right if able.
-			if self.can_move_right and self.pressed_right:
-				if self.cur_horizontal_frame == self.max_horizontal_frame:
-					self.cur_horizontal_frame = 0
-					self.position_x += 32
-					for block in self.tetronimo_blocks:
-						block.position_x += 32
-				else:
-					self.cur_horizontal_frame += 1
+			if not self.marked_for_deletion:
+				# Drive the tetronimo to move left if able.
+				if self.can_move_left and self.pressed_left:
+					if self.cur_horizontal_frame == self.max_horizontal_frame:
+						self.cur_horizontal_frame = 0
+						self.position_x -= 32
+						for block in self.tetronimo_blocks:
+							block.position_x -= 32
+					else:
+						self.cur_horizontal_frame += 1
+						
+				# Drive the tetronimo to move right if able.
+				if self.can_move_right and self.pressed_right:
+					if self.cur_horizontal_frame == self.max_horizontal_frame:
+						self.cur_horizontal_frame = 0
+						self.position_x += 32
+						for block in self.tetronimo_blocks:
+							block.position_x += 32
+					else:
+						self.cur_horizontal_frame += 1
 		
 	def move_blocks(self, delta_x, delta_y):
 		"""Change the x or y position by a certain amount."""

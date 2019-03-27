@@ -7,6 +7,9 @@ class GameObject():
 	def __init__(self, object_id, tag, position_x, position_y, collision_box, sprite_images):
 		"""Initialized the game object."""
 		
+		# Checks if the game object is active. Used to allow updating or rendering.
+		self.is_active = True
+		
 		# Checks if the object is marked for deletion, which will allow the object to
 		# be deleted before the next frame is reached.
 		self.marked_for_deletion = False

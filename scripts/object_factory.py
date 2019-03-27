@@ -6,6 +6,7 @@ from game_object import GameObject
 from text_box import TextBox
 from tetronimo_falling import TetronimoFalling
 from tetronimo_block import TetronimoBlock
+from tetronimo_display import TetronimoDisplay
 
 """The object factory for creating game objects of different types."""
 class ObjectFactory():
@@ -148,6 +149,57 @@ class ObjectFactory():
 		# The tetronimo falling being created.
 		cur_object = TetronimoBlock(self.cur_game_obj_id, 4, position_x, position_y, \
 				tetronimo_type, owner, self.settings, None, sprites)
+		
+		self.game_objects[self.cur_game_obj_id] = cur_object
+		
+		self.cur_game_obj_id += 1
+		
+		return cur_object
+
+	def create_tetronimo_display(self, position_x, position_y):
+		"""Creates the tetronimo display."""
+		
+		# The sprites for the tetronimo block.
+		sprites = {}
+		
+		# The name of the current sprite being gathered.
+		sprite_name = "display_none.png"
+		
+		# The current sprite being gathered.
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		sprite_name = "display_O.png"
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		sprite_name = "display_I.png"
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		sprite_name = "display_J.png"
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		sprite_name = "display_L.png"
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		sprite_name = "display_S.png"
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		sprite_name = "display_Z.png"
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		sprite_name = "display_T.png"
+		cur_sprite = SpriteImage(0, self.pygame_sprites[sprite_name])
+		sprites[sprite_name] = cur_sprite
+		
+		# The tetronimo display being created.
+		cur_object = TetronimoDisplay(self.cur_game_obj_id, 5, position_x, position_y, \
+				None, sprites)
 		
 		self.game_objects[self.cur_game_obj_id] = cur_object
 		

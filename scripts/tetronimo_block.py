@@ -25,11 +25,11 @@ class TetronimoBlock(GameObject):
 		#        ....
 		#        ....
 		#
-		# 2(L) - O..   orange
+		# 2(J) - O..   orange
 		#        OOO
 		#        ...
 		#
-		# 3(J) - ..O   blue
+		# 3(L) - ..O   blue
 		#        OOO
 		#        ...
 		#

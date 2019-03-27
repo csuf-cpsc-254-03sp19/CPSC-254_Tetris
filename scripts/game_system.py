@@ -52,6 +52,9 @@ class GameSystem:
 		# that have already landed.
 		self.tetronimo_blocks = {}
 		
+		# The tetronimo displays.
+		self.tetronimo_displays = {}
+		
 		# The pygame sprite images.
 		self.pygame_sprites = {}
 		
@@ -70,6 +73,7 @@ class GameSystem:
 		self.settings.tetronimos_falling = self.tetronimos_falling
 		self.settings.tetronimo_blocks = self.tetronimo_blocks
 		self.settings.input_manager = self.input_manager
+		self.settings.game_system = self
 		
 		self.object_factory.settings = self.settings
 		self.object_factory.input_manager = self.input_manager
@@ -107,6 +111,11 @@ class GameSystem:
 		self.load_sprite(image_folder_url, "wall_in_leftT.png")
 		self.load_sprite(image_folder_url, "wall_in_rightT.png")
 		self.load_sprite(image_folder_url, "wall_out_center.png")
+		self.load_sprite(image_folder_url, "wall_out_hor.png")
+		self.load_sprite(image_folder_url, "wall_out_vertical_left.png")
+		self.load_sprite(image_folder_url, "wall_out_vertical_right.png")
+		self.load_sprite(image_folder_url, "wall_out_vertical_left_fade.png")
+		self.load_sprite(image_folder_url, "wall_out_vertical_right_fade.png")
 		self.load_sprite(image_folder_url, "block_yellow.png")
 		self.load_sprite(image_folder_url, "block_skyblue.png")
 		self.load_sprite(image_folder_url, "block_orange.png")
@@ -115,6 +124,14 @@ class GameSystem:
 		self.load_sprite(image_folder_url, "block_red.png")
 		self.load_sprite(image_folder_url, "block_purple.png")
 		self.load_sprite(image_folder_url, "block_grey.png")
+		self.load_sprite(image_folder_url, "display_none.png")
+		self.load_sprite(image_folder_url, "display_O.png")
+		self.load_sprite(image_folder_url, "display_I.png")
+		self.load_sprite(image_folder_url, "display_J.png")
+		self.load_sprite(image_folder_url, "display_L.png")
+		self.load_sprite(image_folder_url, "display_S.png")
+		self.load_sprite(image_folder_url, "display_Z.png")
+		self.load_sprite(image_folder_url, "display_T.png")
 		
 	def load_sprite(self, image_folder_url, cur_sprite_image_name):
 		"""Loads a single sprite from the images folder."""
@@ -183,11 +200,26 @@ class GameSystem:
 		self.object_factory.create_text_box(565, 110, text, "PressStart2P-small", 
 				color, False)
 				
+		# Create the tetronimo display objects.
+		self.settings.tetronimo_displays.append( \
+				self.object_factory.create_tetronimo_display(80, 118))
+		self.settings.tetronimo_displays.append( \
+				self.object_factory.create_tetronimo_display(80, 262))
+		self.settings.tetronimo_displays.append( \
+				self.object_factory.create_tetronimo_display(80, 406))
+		self.settings.tetronimo_displays.append( \
+				self.object_factory.create_tetronimo_display(80, 550))
+		self.settings.tetronimo_displays.append( \
+				self.object_factory.create_tetronimo_display(80, 726))
+		
 		self.settings.game_state = 0
 		self.settings.reset_tetronimo_assembly()
 		
 	def load_map_gameplay(self):
 		"""Loads the game map for the classic tetris game."""
+		
+		# First clear the previous game objects.
+		self.clear_gameplay_objects()
 		
 		# Use with to ensure that the file is read entirely.
 		with open("map_gameplay.txt", "r") as in_file:
@@ -226,6 +258,21 @@ class GameSystem:
 					elif char == 'H':
 						self.object_factory.create_gui_wall(
 								cur_position_x, cur_position_y, "wall_in_hor.png")
+					elif char == 'h':
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_out_hor.png")
+					elif char == 'l':
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_out_vertical_left.png")
+					elif char == 'r':
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_out_vertical_right.png")
+					elif char == ',':
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_out_vertical_left_fade.png")
+					elif char == '.':
+						self.object_factory.create_gui_wall(
+								cur_position_x, cur_position_y, "wall_out_vertical_right_fade.png")
 					elif char == '/':
 						self.object_factory.create_gui_wall(
 								cur_position_x, cur_position_y, "wall_in_upleft.png")
@@ -251,7 +298,26 @@ class GameSystem:
 						cur_position_x = 8
 						cur_position_y += 16
 			
+	
+	def load_map_game_over(self):
+		"""Loads the game over map after the player loses."""
 		
+		# First clear the previous game objects.
+		self.clear_gameplay_objects()
+		
+		print("Game over!")
+		
+	def clear_gameplay_objects(self):
+		for key in self.game_objects:
+			# The current game object being deleted.
+			cur_game_obj = self.game_objects[key]
+			
+			# The tag of the current game object.
+			cur_tag = cur_game_obj.tag
+			if cur_tag == 0 or cur_tag == 1 or cur_tag == 2 or cur_tag == 3 or \
+					cur_tag == 4 or cur_tag == 5:
+				cur_game_obj.marked_for_deletion = True
+			
 	def main_loop(self):
 		"""The main loop for updating the game objects and updating all of the engine components."""
 		
@@ -262,6 +328,9 @@ class GameSystem:
 			self.pygame_clock.tick(60)
 			self.delta_time = self.pygame_clock.get_time()
 
+			# Reset the tapped keys in the input manager.
+			self.input_manager.reset_tapped_keys()
+			
 			# Check the keyboard input events.
 			self.input_manager.check_events()
 			
@@ -277,10 +346,23 @@ class GameSystem:
 				# Update the game objects.
 				self.settings.update(self.delta_time)
 				
+				# Update the tetronimos falling.
 				for key in self.tetronimos_falling:
 					# The current game object being updated.
 					cur_object = self.tetronimos_falling[key]
-					cur_object.update(self.delta_time)
+					
+					# Only update game objects that are active.
+					if cur_object.is_active:
+						cur_object.update(self.delta_time)
+					
+				# Update the tetronimo displays.
+				for key in self.tetronimo_displays:
+					# The current game object being updated.
+					cur_object = self.tetronimo_displays[key]
+					
+					#Only update game objects that are active.
+					if cur_object.is_active:
+						cur_object.update(self.delta_time)
 					
 				self.destroy_objects_marked_for_deletion()
 				
@@ -333,27 +415,30 @@ class GameSystem:
 				# The current game object being rendered.
 				cur_game_obj = self.game_objects[key]
 				
-				# The current sprite of the game object being rendered.
-				cur_sprite_image = cur_game_obj.cur_sprite_image
+				# Only render game objects that are active.
+				if cur_game_obj.is_active:
 				
-				# If there is no image, don't render it.
-				if cur_sprite_image is not None and \
-					cur_sprite_image.image_layer == x and \
-					cur_sprite_image.image is not None and \
-					cur_sprite_image.image_rect is not None:
+					# The current sprite of the game object being rendered.
+					cur_sprite_image = cur_game_obj.cur_sprite_image
 					
-					# Update the object rect for the rendering process.
-					cur_sprite_image.update_image_rect(cur_game_obj.position_x, 
-							cur_game_obj.position_y)
+					# If there is no image, don't render it.
+					if cur_sprite_image is not None and \
+						cur_sprite_image.image_layer == x and \
+						cur_sprite_image.image is not None and \
+						cur_sprite_image.image_rect is not None:
+						
+						# Update the object rect for the rendering process.
+						cur_sprite_image.update_image_rect(cur_game_obj.position_x, 
+								cur_game_obj.position_y)
 
-					# The current image being rendered.
-					cur_image = cur_sprite_image.image
+						# The current image being rendered.
+						cur_image = cur_sprite_image.image
 
-					# The rect of the current image being rendered.
-					cur_rect = cur_sprite_image.image_rect
+						# The rect of the current image being rendered.
+						cur_rect = cur_sprite_image.image_rect
 
-					# Blit the sprite to the backbuffer.
-					self.backbuffer.blit(cur_image, cur_rect)
+						# Blit the sprite to the backbuffer.
+						self.backbuffer.blit(cur_image, cur_rect)
 				
 		# Swap the backbuffer.
 		pygame.display.flip()
@@ -367,6 +452,7 @@ class GameSystem:
 		self.gui_text_objects.clear()
 		self.tetronimos_falling.clear()
 		self.tetronimo_blocks.clear()
+		self.tetronimo_displays.clear()
 		
 		# Gather all the game objects and place them in their proper dictionaries.
 		for key in self.game_objects:
@@ -387,6 +473,8 @@ class GameSystem:
 				self.tetronimos_falling[object_id] = cur_game_obj
 			elif cur_game_obj.tag == 4:
 				self.tetronimo_blocks[object_id] = cur_game_obj
+			elif cur_game_obj.tag == 5:
+				self.tetronimo_displays[object_id] = cur_game_obj
 	
 	@staticmethod
 	def clean_up():

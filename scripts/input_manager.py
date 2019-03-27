@@ -11,16 +11,22 @@ class InputManager:
 		self.pressed_q = False
 		self.pressed_z = False
 		self.pressed_x = False
+		self.pressed_c = False
+		self.tapped_c = False
 		self.mouse_button_pressed = False
 		self.mouse_x = 0
 		self.mouse_y = 0
 		self.game_system = game_system
 
+	def reset_tapped_keys(self):
+		# Reset the tapped keys.
+		self.tapped_c = False
+		
 	def check_events(self):
 		"""Respond to keypress and keyrelease events."""
 		self.mouse_button_pressed = False
 		for event in pygame.event.get():
-
+			
 			# The quit, keydown and keyup events.
 			if event.type == pygame.QUIT:
 				self.game_system.is_active = False
@@ -39,6 +45,9 @@ class InputManager:
 					self.pressed_z = True
 				elif event.key == pygame.K_x:
 					self.pressed_x = True
+				elif event.key == pygame.K_c:
+					self.tapped_c = True
+					self.pressed_c = True
 			elif event.type == pygame.KEYUP:
 				if event.key == pygame.K_RIGHT:
 					self.pressed_right = False
@@ -54,6 +63,9 @@ class InputManager:
 					self.pressed_z = False
 				elif event.key == pygame.K_x:
 					self.pressed_x = False
+				elif event.key == pygame.K_c:
+					self.pressed_c = False
+					self.tapped_c = False
 			elif event.type == pygame.MOUSEBUTTONDOWN:
 				self.mouse_button_pressed = True
 

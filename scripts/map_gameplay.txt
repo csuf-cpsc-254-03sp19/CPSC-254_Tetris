@@ -3,48 +3,48 @@ CCCCCCCCCC                    CCCCCCCCCC
 /UUUUUUUU\                    /UUUUUUUU\
 LccccccccR                    LccccccccR
 LccccccccR                    LccccccccR
-LccccccccR                    [DDDDDDDD]
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    /UUUUUUUU\
-LccccccccR                    LccccccccR
-LccccccccR                    LccccccccR
-LccccccccR                    [DDDDDDDD]
-THHHHHHHHt                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-THHHHHHHHt                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-THHHHHHHHt                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-[DDDDDDDD]                    CCCCCCCCCC
-CCCCCCCCCC                    CCCCCCCCCC
-/UUUUUUUU\                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
-LccccccccR                    CCCCCCCCCC
+LccccccccRhhhhhhhhhhhhhhhhhhhh[DDDDDDDD]
+LccccccccR,.,.,.,.,.,.,.,.,.,.CCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlr/UUUUUUUU\
+LccccccccRlrlrlrlrlrlrlrlrlrlrLccccccccR
+LccccccccRlrlrlrlrlrlrlrlrlrlrLccccccccR
+LccccccccRlrlrlrlrlrlrlrlrlrlr[DDDDDDDD]
+THHHHHHHHtlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+THHHHHHHHtlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+THHHHHHHHtlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+[DDDDDDDD]lrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+CCCCCCCCCClrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+/UUUUUUUU\lrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
+LccccccccRlrlrlrlrlrlrlrlrlrlrCCCCCCCCCC
 [DDDDDDDD]CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC

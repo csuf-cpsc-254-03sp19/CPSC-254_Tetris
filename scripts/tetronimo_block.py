@@ -64,23 +64,27 @@ class TetronimoBlock(GameObject):
 		# A reference to the tetronimo blocks.
 		self.tetronimo_blocks = self.settings.tetronimo_blocks
 		
+		self.primary_block_sprite = None
+		
 		# Set the correct image sprite based on the tetronimo type.
 		if self.tetronimo_type == 0:
-			self.cur_sprite_image = self.sprite_images["block_yellow.png"]
+			self.primary_block_sprite = self.sprite_images["block_yellow.png"]
 		elif self.tetronimo_type == 1:
-			self.cur_sprite_image = self.sprite_images["block_skyblue.png"]
+			self.primary_block_sprite = self.sprite_images["block_skyblue.png"]
 		elif self.tetronimo_type == 2:
-			self.cur_sprite_image = self.sprite_images["block_blue.png"]
+			self.primary_block_sprite = self.sprite_images["block_blue.png"]
 		elif self.tetronimo_type == 3:
-			self.cur_sprite_image = self.sprite_images["block_orange.png"]
+			self.primary_block_sprite = self.sprite_images["block_orange.png"]
 		elif self.tetronimo_type == 4:
-			self.cur_sprite_image = self.sprite_images["block_green.png"]
+			self.primary_block_sprite = self.sprite_images["block_green.png"]
 		elif self.tetronimo_type == 5:
-			self.cur_sprite_image = self.sprite_images["block_red.png"]
+			self.primary_block_sprite = self.sprite_images["block_red.png"]
 		elif self.tetronimo_type == 6:
-			self.cur_sprite_image = self.sprite_images["block_purple.png"]
+			self.primary_block_sprite = self.sprite_images["block_purple.png"]
 		elif self.tetronimo_type == 7:
-			self.cur_sprite_image = self.sprite_images["block_grey.png"]
+			self.primary_block_sprite = self.sprite_images["block_grey.png"]
+			
+		self.cur_sprite_image = self.primary_block_sprite
 			
 	def update(self, delta_time):
 		"""Updates the tetronimo block object."""
@@ -152,4 +156,9 @@ class TetronimoBlock(GameObject):
 			
 	def change_block_to_landed(self):
 		self.block_state = 1
+
+	def change_to_grey_block_sprite(self):
 		self.cur_sprite_image = self.sprite_images["block_grey.png"]
+		
+	def change_to_primary_block_sprite(self):
+		self.cur_sprite_image = self.primary_block_sprite

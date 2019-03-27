@@ -32,6 +32,12 @@ class Settings():
 		# The minimum period for the tetronimo to fall.
 		self.tetronimo_timer_min_period = 50.0
 		
+		# The period at which the row of tetronimos is removed.
+		self.remove_row_timer_period = 1000.0
+		
+		# The period at which the blocks flash.
+		self.block_flash_period = 200.0
+		
 		# The cache for the tetronimo time period.
 		self.tetronimo_timer_period_cache = self.tetronimo_timer_period
 		
@@ -39,6 +45,12 @@ class Settings():
 		# tetronimo_timer_period, the tetronimo_timer_cur will increment and this will be 
 		# reset to 0.0.
 		self.delta_time_accum = 0.0
+		
+		# The delta time accumulated for removing a single row.
+		self.delta_time_accum_remove_row = 0.0
+		
+		# The delta time accumulated for the block flash.
+		self.delta_time_accum_block_flash = 0.0
 		
 		# The bounds of the tetronimo container. left, right, top, bottom.
 		self.tetronimo_container_bounds = (160, 480, 16, 784)
@@ -55,6 +67,9 @@ class Settings():
 		# Checks if the tetronimo_timer_cur has been incremented. Used to drive the 
 		# vertical movement of the tetronimos and the tetronimo game state.
 		self.tetronimo_inc = False
+		
+		# The rows of tetronimos that are found.
+		self.tetronimo_rows = {}
 		
 		# A reference to the tetronimos falling.
 		self.tetronimos_falling = None
@@ -119,9 +134,85 @@ class Settings():
 				self.tetronimo_inc = True
 						
 				# If in assembly state has fallen, create a new tetronimo.
-				if self.tetronimo_assembly_state == 1:
+				if self.tetronimo_assembly_state == 1 or \
+						self.tetronimo_assembly_state == 3:
 					self.tetronimo_assembly_state = 5
 				
+			# Or check if there is a line of tetronimos.
+			if self.tetronimo_assembly_state == 1:
+				# The row count values.
+				row_counts = {}
+				row_objs = {}
+				# Check for a line of tetronimos.
+				for key in self.tetronimo_blocks:
+					cur_block = self.tetronimo_blocks[key]
+					
+					pos_y = cur_block.position_y
+					if not pos_y in row_counts:
+						row_counts[pos_y] = 0
+						row_objs[pos_y] = []
+						
+					row_counts[pos_y] += 1
+					row_objs[pos_y].append(cur_block)
+					
+				for key in row_counts:
+					cur_row_count = row_counts[key]
+					if cur_row_count == 10:
+						# Add the rows with row count 10 to the list of rows found.
+						for key2 in row_counts:
+							cur_row_count2 = row_counts[key2]
+							if cur_row_count2 == 10:
+								self.tetronimo_rows[key2] = row_objs[key2]
+						
+						self.tetronimo_assembly_state = 2
+						break
+						
+			# The state for destroying the rows of tetronimo blocks.
+			if self.tetronimo_assembly_state == 2:
+				# Once the timer is finished, destroy the row of blocks.
+				if self.delta_time_accum_remove_row >= self.remove_row_timer_period:
+					self.tetronimo_assembly_state = 3
+					self.delta_time_accum = 0.0
+					self.delta_time_accum_remove_row = 0.0
+					self.delta_time_accum_block_flash = 0.0
+					
+					# Destroy all the blocks in each row. Also move down blocks that are 
+					# above the row.
+					for key in self.tetronimo_rows:
+						cur_tetronimo_row = self.tetronimo_rows[key]
+						
+						for block in cur_tetronimo_row:
+							block.marked_for_deletion = True
+							
+						for key2 in self.tetronimo_blocks:
+							cur_block = self.tetronimo_blocks[key2]
+							
+							if cur_block.position_y <= key:
+								cur_block.position_y += 32
+								
+					self.tetronimo_rows.clear()
+					
+				else:
+					self.delta_time_accum_remove_row += delta_time
+					self.delta_time_accum_block_flash += delta_time
+					
+					# Change the colors of the tetronimo blocks.
+					if self.delta_time_accum_block_flash < self.block_flash_period / 2:
+						for key in self.tetronimo_rows:
+							cur_tetronimo_row = self.tetronimo_rows[key]
+							
+							for block in cur_tetronimo_row:
+								block.change_to_grey_block_sprite()
+					elif self.delta_time_accum_block_flash >= self.block_flash_period / 2 and \
+							self.delta_time_accum_block_flash < self.block_flash_period:
+						for key in self.tetronimo_rows:
+							cur_tetronimo_row = self.tetronimo_rows[key]
+							
+							for block in cur_tetronimo_row:
+								block.change_to_primary_block_sprite()
+								
+					else:
+						self.delta_time_accum_block_flash = 0.0
 				
 			# Game state for when the tetronimo is first being created.
 			if self.tetronimo_assembly_state == 5:

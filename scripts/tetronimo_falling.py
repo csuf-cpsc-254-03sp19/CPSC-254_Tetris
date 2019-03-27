@@ -477,8 +477,6 @@ class TetronimoFalling(GameObject):
 					kicked = False
 					
 					self.rotate_blocks()
-						
-					print("kick attempts.")
 					
 					# Before keeping a rotation, check to see if the tetronimo can 
 					# actually rotate, or if it needs to kick a wall. If not, change back 
@@ -726,7 +724,6 @@ class TetronimoFalling(GameObject):
 			if (not kick_positive and kick_position_global_x < wall_value) or \
 				(kick_positive and kick_position_global_x > wall_value):
 					
-				print("kicked wall!")
 				kicked = True
 				can_rotate = self.apply_kick(kick_offset, kick_x, kick_positive)
 		else:
@@ -740,13 +737,11 @@ class TetronimoFalling(GameObject):
 			if (not kick_positive and kick_position_global_y < wall_value) or \
 				(kick_positive and kick_position_global_y > wall_value):
 					
-				print("kicked wall!")
 				kicked = True
 				can_rotate = self.apply_kick(kick_offset, kick_x, kick_positive)
 					
 		# Check if kicking the other blocks.
 		if not kicked:
-			print("look for blocks..")
 			# Iterate through every other tetronimo block and check for collisions with 
 			# this tetronimo's blocks.
 			for key in self.settings.tetronimo_blocks:
@@ -763,12 +758,8 @@ class TetronimoFalling(GameObject):
 						kick_position_global_y >= cur_block_other.position_y - 8 and \
 						kick_position_global_y < cur_block_other.position_y + 8:
 						
-						print("kicked block!")
 						kicked = True
 						can_rotate = self.apply_kick(kick_offset, kick_x, kick_positive)
-						
-						if not can_rotate:
-							print("rotation failed.")
 						
 		# If it cannot rotate, then it cannot be kicked either.
 		if can_rotate == False:
@@ -829,7 +820,6 @@ class TetronimoFalling(GameObject):
 		# If a collision has been found, then the wall kick has failed. return to
 		# The previous block positions.
 		if found_collision:
-			print("cannot rotate!")
 			
 			# Kick the blocks back to their previous position.
 			if kick_x:

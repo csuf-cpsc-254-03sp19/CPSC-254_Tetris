@@ -110,8 +110,42 @@ class Settings():
 		# A reference to the game system.
 		self.game_system = None
 		
+		#text box score
+		self.text_box_score = None
+		
+		#text box highscore
+		self.text_box_highscore = None
+
 		# Set up the random seed.
 		random.seed()
+
+		# The score for each line clear 
+		self.score = 0
+		
+		
+		#Highscore 
+		highscore = 0
+		
+		#open high_score txt file and read in file 
+		highscore = open("high_score.txt", "r+")
+		highscore = highscore.read(1)
+		#if file is emppty where there no highscore 
+
+		if not highscore:
+			# Then write 0 in high_score.txt file 
+			whighscore= open("high_score.txt", "w+")
+			whighscore.write(str(0))
+			whighscore.close()
+
+		#read high_score.txt 
+		highscore = open("high_score.txt", "r+")
+		highscore = highscore.read()
+
+		# if score is greater than highscore then output the score to the txt file 
+		if int(self.score) > int(highscore):
+			writehighscore= open("high_score.txt", "w+")
+			writehighscore.write(str(self.score))
+	
 		
 	def reset_tetronimo_assembly(self):
 		"""Resets the tetronimo assembly. Must be called after every game start."""
@@ -158,10 +192,27 @@ class Settings():
 			cur_tetronimo_display = self.tetronimo_displays[x]
 			
 			cur_tetronimo_display.image_type = cur_tetronimo_type
+	
+	
 		
 	def update(self, delta_time):
 		"""Updates the settings and the primary game mechanics."""
 		
+		if self.text_box_score is not None:
+			self.text_box_score.set_text(str(self.score))
+
+		if self.text_box_highscore is not None:
+			
+			#read in highscore from high_score.txt file
+			highscore = open("high_score.txt", "r+")
+			highscore = highscore.read()
+			if int(self.score) > int(highscore):
+				self.text_box_highscore.set_text(str(self.score))
+				writehighscore= open("high_score.txt", "w+")
+				writehighscore.write(str(self.score))
+			if int(self.score) <= int(highscore):
+				self.text_box_highscore.set_text(str(highscore))
+
 		# Game state for when the game is playing classic mode.
 		if self.game_state == 0:
 		
@@ -387,27 +438,36 @@ class Settings():
 						# the row block list that it belongs to.
 						row_counts[pos_y] += 1
 						row_objs[pos_y].append(cur_block)
-					
+			
 				# Find the rows that have 10 blocks in them.
 				for key in row_counts:
 					# The current row cound that was found.
 					cur_row_count = row_counts[key]
-					
+			
 					# If the row count is 10, then we found a row with 10 blocks.
 					if cur_row_count == 10:
+						#self.score += 40
+						#print(self.score)
 						# Add the rows with row count 10 to the list of rows found.
-						for key2 in row_counts:
-						
+						for key2 in row_counts:	
+												
 							# The current row count for the secondary row count.
 							cur_row_count2 = row_counts[key2]
-							
+	
 							# If the row has 10 blocks, then add the row object to the 
 							# tetronimo rows list.
 							if cur_row_count2 == 10:
 								self.tetronimo_rows[key2] = row_objs[key2]
-						
+
+								self.score += 40
+								
 						self.tetronimo_assembly_state = 2
+				
+						
+						
+						
 						break
+						
 						
 			# The state for destroying the rows of tetronimo blocks.
 			if self.tetronimo_assembly_state == 2:
@@ -437,6 +497,7 @@ class Settings():
 						# Go through every block and mark it for deletion.
 						for block in cur_tetronimo_row:
 							block.marked_for_deletion = True
+					
 							
 						# Also increment the y value of the blocks above the row of blocks 
 						# being deleted.
@@ -454,7 +515,12 @@ class Settings():
 									cur_block.position_y += 32
 									
 						self.rows_cleared += 1
+						self.clear_row = self.rows_cleared 
 						
+						self.clear_row += 0
+						print(self.clear_row)
+						
+						self.clear_row = 0
 						# For every 4 rows cleared, decrease the tetronimo timer period by 
 						# 10 to increase the difficulty.
 						if self.tetronimo_timer_period > 50.0 and \
@@ -534,6 +600,8 @@ class Settings():
 		# The game over screen processing.
 		elif self.game_state == 2:
 			print("Game over!")
+
+		
 	
 	def change_all_blocks_to_grey(self):
 		"""Changes all the blocks to grey. Also removes any blocks past the tetronimo container bounds."""

@@ -6,6 +6,7 @@ from sprite_image import SpriteImage
 from object_factory import ObjectFactory
 from settings import Settings
 
+
 """The primary game system that is the skeleton of the entire game. It contains the setup functions as well as the main game loop and collision detection functions."""
 class GameSystem:
 	def __init__(self):
@@ -196,9 +197,35 @@ class GameSystem:
 		self.object_factory.create_text_box(565, 32, text, "PressStart2P-small", 
 				color, False)
 		
+		
 		text = "SCORE:"
 		self.object_factory.create_text_box(565, 110, text, "PressStart2P-small", 
 				color, False)
+
+		color_white = (255, 255, 255)
+
+		#self.object_factory.create_text_box(565, 255,"Score:", "PressStart2P-small", 
+		#		color, False)
+		self.settings.text_box_score = self.object_factory.create_text_box(565, 145, str(self.settings.score), "PressStart2P-small", 
+				color_white, False)
+		
+		#read in highscore from high_score.txt file
+		highscore = open("high_score.txt", "r+")
+		highscore = highscore.read()
+
+
+		# if the score is less than or equal to highscore, then print highscore 
+		if int(self.settings.score) <= int(highscore):
+		#	self.object_factory.create_text_box(565, 355, "HighScore:", "PressStart2P-small", 
+		#		color_white, False)
+			self.settings.text_box_highscore = self.object_factory.create_text_box(565, 70, str(highscore), "PressStart2P-small", 
+				color_white, False)
+		# if the score is greater than highscore then print highscore will turn to score number. 
+		if int(self.settings.score) > int(highscore):
+		#	self.object_factory.create_text_box(565, 355, "HighScore:", "PressStart2P-small",
+		#		color_white, False)
+			self.settings.text_box_highscore =self.object_factory.create_text_box(565, 70, str(self.settings.score), "PressStart2P-small", 
+				color_white, False)
 				
 		# Create the tetronimo display objects.
 		self.settings.tetronimo_displays.append( \

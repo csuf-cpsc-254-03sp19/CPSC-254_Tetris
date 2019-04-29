@@ -204,8 +204,6 @@ class GameSystem:
 
 		color_white = (255, 255, 255)
 
-		#self.object_factory.create_text_box(565, 255,"Score:", "PressStart2P-small", 
-		#		color, False)
 		self.settings.text_box_score = self.object_factory.create_text_box(565, 145, str(self.settings.score), "PressStart2P-small", 
 				color_white, False)
 		
@@ -216,15 +214,11 @@ class GameSystem:
 
 		# if the score is less than or equal to highscore, then print highscore 
 		if int(self.settings.score) <= int(highscore):
-		#	self.object_factory.create_text_box(565, 355, "HighScore:", "PressStart2P-small", 
-		#		color_white, False)
 			self.settings.text_box_highscore = self.object_factory.create_text_box(565, 70, str(highscore), "PressStart2P-small", 
 				color_white, False)
 		# if the score is greater than highscore then print highscore will turn to score number. 
 		if int(self.settings.score) > int(highscore):
-		#	self.object_factory.create_text_box(565, 355, "HighScore:", "PressStart2P-small",
-		#		color_white, False)
-			self.settings.text_box_highscore =self.object_factory.create_text_box(565, 70, str(self.settings.score), "PressStart2P-small", 
+			self.settings.text_box_highscore = self.object_factory.create_text_box(565, 70, str(self.settings.score), "PressStart2P-small", 
 				color_white, False)
 				
 		# Create the tetronimo display objects.

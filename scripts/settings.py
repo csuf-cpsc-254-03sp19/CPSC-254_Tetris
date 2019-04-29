@@ -137,10 +137,6 @@ class Settings():
 			whighscore.write(str(0))
 			whighscore.close()
 
-		#read high_score.txt 
-		highscore = open("high_score.txt", "r+")
-		highscore = highscore.read()
-
 		# if score is greater than highscore then output the score to the txt file 
 		if int(self.score) > int(highscore):
 			writehighscore= open("high_score.txt", "w+")
@@ -197,15 +193,16 @@ class Settings():
 		
 	def update(self, delta_time):
 		"""Updates the settings and the primary game mechanics."""
-		
+		#update score in text box
 		if self.text_box_score is not None:
 			self.text_box_score.set_text(str(self.score))
-
+		#high score text 
 		if self.text_box_highscore is not None:
 			
 			#read in highscore from high_score.txt file
 			highscore = open("high_score.txt", "r+")
 			highscore = highscore.read()
+			#if score higher then update highscore
 			if int(self.score) > int(highscore):
 				self.text_box_highscore.set_text(str(self.score))
 				writehighscore= open("high_score.txt", "w+")
@@ -458,7 +455,7 @@ class Settings():
 							# tetronimo rows list.
 							if cur_row_count2 == 10:
 								self.tetronimo_rows[key2] = row_objs[key2]
-
+								#increment score by 40 for each row clear
 								self.score += 40
 								
 						self.tetronimo_assembly_state = 2
@@ -515,12 +512,8 @@ class Settings():
 									cur_block.position_y += 32
 									
 						self.rows_cleared += 1
-						self.clear_row = self.rows_cleared 
+			
 						
-						self.clear_row += 0
-						print(self.clear_row)
-						
-						self.clear_row = 0
 						# For every 4 rows cleared, decrease the tetronimo timer period by 
 						# 10 to increase the difficulty.
 						if self.tetronimo_timer_period > 50.0 and \

@@ -16,6 +16,7 @@ class InputManager:
 		self.mouse_button_pressed = False
 		self.mouse_x = 0
 		self.mouse_y = 0
+		self.pos = None
 		self.game_system = game_system
 
 	def reset_tapped_keys(self):
@@ -24,9 +25,15 @@ class InputManager:
 		
 	def check_events(self):
 		"""Respond to keypress and keyrelease events."""
+		
 		self.mouse_button_pressed = False
+		
+		# Get the mouse location.
+		self.pos = pygame.mouse.get_pos()
+		self.mouse_x, self.mouse_y = self.pos
+		
 		for event in pygame.event.get():
-			
+		
 			# The quit, keydown and keyup events.
 			if event.type == pygame.QUIT:
 				self.game_system.is_active = False
@@ -68,6 +75,3 @@ class InputManager:
 					self.tapped_c = False
 			elif event.type == pygame.MOUSEBUTTONDOWN:
 				self.mouse_button_pressed = True
-
-		# Get the mouse location.
-		self.mouse_x, self.mouse_y = pygame.mouse.get_pos()

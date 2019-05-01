@@ -10,7 +10,7 @@ class Settings():
 		# 0 - Classic Mode.
 		# 1 - Title Screen.
 		# 2 - Game Over Screen.
-		self.game_state = 0
+		self.game_state = 1
 		
 		# The tetronimo assembly state for managing how tetronimos are being created.
 		# 0 - Tetronimo is falling.
@@ -589,10 +589,6 @@ class Settings():
 						spawn_pos_x, spawn_pos_y, self.next_tetronimo_type)
 						
 				self.tetronimo_assembly_state = 0
-				
-		# The game over screen processing.
-		elif self.game_state == 2:
-			print("Game over!")
 
 		
 	

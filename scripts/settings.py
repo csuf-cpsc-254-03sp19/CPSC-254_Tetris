@@ -128,7 +128,7 @@ class Settings():
 		
 		#open high_score txt file and read in file 
 		highscore = open("high_score.txt", "r+")
-		highscore = highscore.read(1)
+		highscore = highscore.read()
 		#if file is emppty where there no highscore 
 
 		if not highscore:
@@ -141,7 +141,7 @@ class Settings():
 		if int(self.score) > int(highscore):
 			writehighscore= open("high_score.txt", "w+")
 			writehighscore.write(str(self.score))
-	
+			writehighscore.close()
 		
 	def reset_tetronimo_assembly(self):
 		"""Resets the tetronimo assembly. Must be called after every game start."""

@@ -189,6 +189,8 @@ class GameSystem:
 		# Create the pygame module.
 		pygame.init()
 
+		self.settings.init_audio()
+		
 		# Get the pygame clock.
 		self.pygame_clock = pygame.time.Clock()
 
@@ -202,14 +204,14 @@ class GameSystem:
 		"""The code for setting up the title screen."""
 		
 		# The high score file.
-		highscore = open("high_score.txt", "a+")
-		highscore = open("high_score.txt", "r+")
+		highscore = open("../data/high_score.txt", "a+")
+		highscore = open("../data/high_score.txt", "r+")
 
 		# The high score number.
 		highscore = highscore.read()
 
 		if not highscore: 
-			whighscore = open("high_score.txt", "w+")
+			whighscore = open("../data/high_score.txt", "w+")
 			whighscore.write(str(0))
 			whighscore.close()
 
@@ -306,7 +308,7 @@ class GameSystem:
 				color_white, False)
 		
 		#read in highscore from high_score.txt file
-		highscore = open("high_score.txt", "r+")
+		highscore = open("../data/high_score.txt", "r+")
 		highscore = highscore.read()
 
 
@@ -334,6 +336,9 @@ class GameSystem:
 		self.settings.game_state = 0
 		self.settings.reset_tetronimo_assembly()
 		
+		pygame.mixer.music.load(self.settings.tetris_a_url)
+		pygame.mixer.music.play(True, 0.0)
+		
 	def load_map_gameplay(self):
 		"""Loads the game map for the classic tetris game."""
 		
@@ -341,7 +346,7 @@ class GameSystem:
 		self.clear_gameplay_objects()
 		
 		# Use with to ensure that the file is read entirely.
-		with open("map_gameplay.txt", "r") as in_file:
+		with open("../data/map_gameplay.txt", "r") as in_file:
 			# The text containing all the characters for the map objects.
 			map_text = in_file.read()
 				
@@ -427,8 +432,6 @@ class GameSystem:
 		self.setup_title_screen()
 		self.settings.game_state = 1
 		
-		print("Game over!")
-		
 	def clear_gameplay_objects(self):
 		for key in self.game_objects:
 			# The current game object being deleted.
@@ -493,7 +496,6 @@ class GameSystem:
 					self.destroy_objects_marked_for_deletion()
 				
 					# Update the collision detection.
-					self.collision_detection()
 					self.destroy_objects_marked_for_deletion()
 					self.gather_objects()
 				
@@ -522,13 +524,6 @@ class GameSystem:
 		# Remove the empty keys.
 		for key in empty_keys:
 			self.game_objects.pop(key, None)
-		
-	def collision_detection(self):
-		"""Manages the collision detection between certain objects."""
-		
-		# TODO: For now.
-		if self.settings.game_state == 1:
-			print("Collision detection.")
 		
 	def render_objects(self):
 		"""Render all the game objects to the screen."""

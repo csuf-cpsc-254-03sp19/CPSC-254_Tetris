@@ -462,8 +462,10 @@ class TetronimoFalling(GameObject):
 				
 			# Check if pressing the rotate key.
 			if self.input_manager.pressed_z:
+			
 				# If haven't rotated previously, rotate the tetronimo.
 				if not self.pressed_rotate:
+				
 					# Increment the rotation index. If equal to 3, set it to zero.
 					if self.rotation_state < 3:
 						self.rotation_state += 1
@@ -519,7 +521,7 @@ class TetronimoFalling(GameObject):
 					# If the rotation failed, rotate the piece back to its original 
 					# position.
 					if not can_rotate:
-						self.rotation_state
+					
 						# Decrement the rotation index. If equal to 0, set it to 3.
 						if self.rotation_state > 0:
 							self.rotation_state -= 1
@@ -527,6 +529,8 @@ class TetronimoFalling(GameObject):
 							self.rotation_state = 3
 							
 						self.rotate_blocks()
+					else:
+						self.settings.channel_2.play(self.settings.sound_rotate, False)
 					
 				self.pressed_rotate = True
 			else:
@@ -550,6 +554,8 @@ class TetronimoFalling(GameObject):
 				# The shortest y distance found. It will be used as the offset amount for
 				# the tetronimo.
 				shortest_y_distance = 999.0
+				
+				self.settings.channel_1.play(self.settings.sound_hit_floor, False)
 				
 				# First, check for the shortest distance between the owner's tetronimo 
 				# blocks and the other tetronimo blocks.
@@ -616,6 +622,7 @@ class TetronimoFalling(GameObject):
 					# the tetronimo, and the blocks will be landed.
 					self.marked_for_deletion = True
 					
+					self.settings.channel_1.play(self.settings.sound_hit_floor, False)
 					self.settings.tetronimo_assembly_state = 1
 					
 					# If moving downwards, switch over to the default speed to prevent too 

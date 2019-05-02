@@ -115,6 +115,19 @@ class Settings():
 		
 		#text box highscore
 		self.text_box_highscore = None
+		
+		# The sound buffer for the background sounds.
+		self.channel_1 = None
+		self.channel_2 = None
+		self.channel_3 = None
+		
+		# The song for the background music.
+		self.tetris_a_url = "../audio/tetris_a.ogg"
+		
+		# The sound effects.
+		self.sound_hit_floor = None
+		self.sound_rotate = None
+		self.sound_tetris = None
 
 		# Set up the random seed.
 		random.seed()
@@ -127,21 +140,38 @@ class Settings():
 		highscore = 0
 		
 		#open high_score txt file and read in file 
-		highscore = open("high_score.txt", "r+")
+		highscore = open("../data/high_score.txt", "r+")
 		highscore = highscore.read()
 		#if file is emppty where there no highscore 
 
 		if not highscore:
 			# Then write 0 in high_score.txt file 
-			whighscore= open("high_score.txt", "w+")
+			whighscore= open("../data/high_score.txt", "w+")
 			whighscore.write(str(0))
 			whighscore.close()
 
 		# if score is greater than highscore then output the score to the txt file 
 		if int(self.score) > int(highscore):
-			writehighscore= open("high_score.txt", "w+")
+			writehighscore= open("../data/high_score.txt", "w+")
 			writehighscore.write(str(self.score))
 			writehighscore.close()
+		
+	def init_audio(self):
+		# Initialize the sound mixer.
+		pygame.mixer.init(44100, -16, 1, 512)
+		
+		# The sound buffer for the background sounds.
+		self.channel_1 = pygame.mixer.Channel(0)
+		self.channel_2 = pygame.mixer.Channel(1)
+		self.channel_3 = pygame.mixer.Channel(2)
+		
+		# The song for the background music.
+		self.tetris_a_url = "../audio/tetris_a.ogg"
+		
+		# The sound effects.
+		self.sound_hit_floor = pygame.mixer.Sound("../audio/hit_floor.ogg")
+		self.sound_rotate = pygame.mixer.Sound("../audio/rotate.ogg")
+		self.sound_tetris = pygame.mixer.Sound("../audio/tetris.ogg")
 		
 	def reset_tetronimo_assembly(self):
 		"""Resets the tetronimo assembly. Must be called after every game start."""
@@ -200,12 +230,12 @@ class Settings():
 		if self.text_box_highscore is not None:
 			
 			#read in highscore from high_score.txt file
-			highscore = open("high_score.txt", "r+")
+			highscore = open("../data/high_score.txt", "r+")
 			highscore = highscore.read()
 			#if score higher then update highscore
 			if int(self.score) > int(highscore):
 				self.text_box_highscore.set_text(str(self.score))
-				writehighscore= open("high_score.txt", "w+")
+				writehighscore= open("../data/high_score.txt", "w+")
 				writehighscore.write(str(self.score))
 			if int(self.score) <= int(highscore):
 				self.text_box_highscore.set_text(str(highscore))
@@ -241,6 +271,7 @@ class Settings():
 					
 					# If there is no cached tetronimo, then cache one.
 					if self.cached_tetronimo_falling is None:
+						
 						# Deactivate the current tetronimo falling.
 						self.cur_tetronimo_falling.is_active = False
 						
@@ -254,6 +285,9 @@ class Settings():
 						# Update the tetronimo display for the saved tetronimo.
 						self.tetronimo_displays[len(self.tetronimo_displays) - 1]. \
 							image_type = self.cur_tetronimo_falling.tetronimo_type
+							
+						self.channel_2.play(self.sound_rotate, False)
+						
 					else:		
 						# Tetronimos may differ in their central coordinate depending 
 						# on their tetronimo type, so choose the correct offsets for 
@@ -380,6 +414,8 @@ class Settings():
 							# Update the tetronimo display for the saved tetronimo.
 							self.tetronimo_displays[len(self.tetronimo_displays) - 1]. \
 								image_type = self.cached_tetronimo_falling.tetronimo_type
+								
+							self.channel_2.play(self.sound_rotate, False)
 						
 			self.delta_time_accum += delta_time
 			
@@ -405,6 +441,9 @@ class Settings():
 					if cur_block.is_active and cur_block.block_state == 1 and \
 							cur_block.position_y == 64:
 						self.tetronimo_assembly_state = 4
+						
+						pygame.mixer.music.stop()
+						
 						self.change_all_blocks_to_grey()
 						break
 						
@@ -459,12 +498,10 @@ class Settings():
 								self.score += 40
 								
 						self.tetronimo_assembly_state = 2
-				
 						
-						
+						self.channel_3.play(self.sound_tetris, False)
 						
 						break
-						
 						
 			# The state for destroying the rows of tetronimo blocks.
 			if self.tetronimo_assembly_state == 2:
@@ -512,7 +549,6 @@ class Settings():
 									cur_block.position_y += 32
 									
 						self.rows_cleared += 1
-			
 						
 						# For every 4 rows cleared, decrease the tetronimo timer period by 
 						# 10 to increase the difficulty.

@@ -6,7 +6,8 @@ Please do not move the executables to different folders as they rely on the data
 You must download python 3.7.0 and pygame via pip if you want to be able to run the scripts via the python3 command (or python if you are on Windows).
 Double click on the tetris.py file to run it or use the console and type python tetris.py.
 
-https://trello.com/invite/b/t445XPXv/c32f533e65b51786ff0af741d990ac5f/untitled-board
+The trello board:
+https://trello.com/b/t445XPXv/cpsc-254-tetris
 
 GAME CONTROLS:
 

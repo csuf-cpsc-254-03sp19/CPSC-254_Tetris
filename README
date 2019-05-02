@@ -11,3 +11,6 @@ Arrow keys - move the tetronimos.
 z - rotate the tetronimo.
 x - force the tetronimo to fall immediately.
 c - store the tetronimo for later.
+
+Windows build made with cx_freeze.
+Linux build made with pyinstaller.

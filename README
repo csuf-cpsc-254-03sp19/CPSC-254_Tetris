@@ -1,6 +1,9 @@
 
-You must download python 3.7.0 and pygame via pip if you want to be able to run the scripts.
+To play the game, if you are on Linux go into the linux_build folder and double click tetris. 
+If you are on Windows, go into the windows_build folder and double click the tetris.exe executable.
+Please do not move the executables to different folders as they rely on the data, images and audio folders for the game to run.
 
+You must download python 3.7.0 and pygame via pip if you want to be able to run the scripts via the python3 command (or python if you are on Windows).
 Double click on the tetris.py file to run it or use the console and type python tetris.py.
 
 https://trello.com/invite/b/t445XPXv/c32f533e65b51786ff0af741d990ac5f/untitled-board
@@ -8,9 +11,10 @@ https://trello.com/invite/b/t445XPXv/c32f533e65b51786ff0af741d990ac5f/untitled-b
 GAME CONTROLS:
 
 Arrow keys - move the tetronimos.
-z - rotate the tetronimo.
-x - force the tetronimo to fall immediately.
-c - store the tetronimo for later.
+z - Rotate the tetrimino.
+x - Force the tetrimino to fall immediately.
+c - Store the tetrimino for later.
+q - Quit the game.
 
 Windows build made with cx_freeze.
 Linux build made with pyinstaller.

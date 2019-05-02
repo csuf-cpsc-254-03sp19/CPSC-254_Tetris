@@ -337,7 +337,7 @@ class GameSystem:
 		self.settings.reset_tetronimo_assembly()
 		
 		pygame.mixer.music.load(self.settings.tetris_a_url)
-		pygame.mixer.music.play(True, 0.0)
+		pygame.mixer.music.play(-1, 0.0)
 		
 	def load_map_gameplay(self):
 		"""Loads the game map for the classic tetris game."""

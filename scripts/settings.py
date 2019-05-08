@@ -240,6 +240,9 @@ class Settings():
 			if int(self.score) <= int(highscore):
 				self.text_box_highscore.set_text(str(highscore))
 
+		if self.text_box_rowclear is not None: 
+			self.text_box_rowclear.set_text(str(self.rows_cleared))
+
 		# Game state for when the game is playing classic mode.
 		if self.game_state == 0:
 		
@@ -549,6 +552,8 @@ class Settings():
 									cur_block.position_y += 32
 									
 						self.rows_cleared += 1
+
+						
 						
 						# For every 4 rows cleared, decrease the tetronimo timer period by 
 						# 10 to increase the difficulty.

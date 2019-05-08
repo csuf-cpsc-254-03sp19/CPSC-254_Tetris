@@ -302,9 +302,16 @@ class GameSystem:
 		self.object_factory.create_text_box(565, 110, text, "PressStart2P-small", 
 				color, False)
 
+		text = "LINE CLEARED:"
+		self.object_factory.create_text_box(565, 710, text, "PressStart2P-small", 
+				color, False)
+
 		color_white = (255, 255, 255)
 
 		self.settings.text_box_score = self.object_factory.create_text_box(565, 145, str(self.settings.score), "PressStart2P-small", 
+				color_white, False)
+
+		self.settings.text_box_rowclear = self.object_factory.create_text_box(565, 745, str(self.settings.rows_cleared), "PressStart2P-small", 
 				color_white, False)
 		
 		#read in highscore from high_score.txt file

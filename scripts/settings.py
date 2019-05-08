@@ -1,5 +1,6 @@
 import pygame
 import random
+import os.path
 
 """The settings object for the game. It contains all the scoring and high score information, as well as the game state and the tetronimo assembly."""
 class Settings():
@@ -139,7 +140,11 @@ class Settings():
 		#Highscore 
 		highscore = 0
 		
-		#open high_score txt file and read in file 
+		#open high_score txt file and read in file. First check if it exists. If not, add it.
+		if not os.path.isfile("../data/high_score.txt"):
+			highscore= open("../data/high_score.txt", "w+")
+			highscore.close()
+		
 		highscore = open("../data/high_score.txt", "r+")
 		highscore = highscore.read()
 		#if file is emppty where there no highscore 
@@ -239,9 +244,6 @@ class Settings():
 				writehighscore.write(str(self.score))
 			if int(self.score) <= int(highscore):
 				self.text_box_highscore.set_text(str(highscore))
-
-		if self.text_box_rowclear is not None: 
-			self.text_box_rowclear.set_text(str(self.rows_cleared))
 
 		# Game state for when the game is playing classic mode.
 		if self.game_state == 0:
@@ -552,8 +554,6 @@ class Settings():
 									cur_block.position_y += 32
 									
 						self.rows_cleared += 1
-
-						
 						
 						# For every 4 rows cleared, decrease the tetronimo timer period by 
 						# 10 to increase the difficulty.

@@ -337,7 +337,7 @@ class GameSystem:
 		self.settings.reset_tetronimo_assembly()
 		
 		pygame.mixer.music.load(self.settings.tetris_a_url)
-		pygame.mixer.music.play(-1, 0.0)
+		pygame.mixer.music.play(8, 0.0)
 		
 	def load_map_gameplay(self):
 		"""Loads the game map for the classic tetris game."""
@@ -430,7 +430,24 @@ class GameSystem:
 		self.clear_gameplay_objects()
 		
 		self.setup_title_screen()
+		
 		self.settings.game_state = 1
+		self.settings.score = 0
+		self.settings.tetronimo_assembly_state = 0
+		self.settings.tetronimo_timer_cur = 0
+		self.settings.next_tetronimo_type = 0
+		self.settings.rows_cleared = 0
+		self.settings.tetronimo_timer_period = 1000.0
+		self.settings.tetronimo_timer_min_period = 50.0
+		self.settings.remove_row_timer_period = 1000.0
+		self.settings.block_flash_period = 200.0
+		self.settings.tetronimo_timer_period_cache = self.settings.tetronimo_timer_period
+		self.settings.delta_time_accum = 0.0
+		self.settings.delta_time_accum_remove_row = 0.0
+		self.settings.delta_time_accum_block_flash = 0.0
+		self.settings.block_fill_pos_y = self.settings.tetronimo_container_bounds[3]
+		self.settings.tetronimo_inc = False
+		self.settings.tetronimo_displays.clear()
 		
 	def clear_gameplay_objects(self):
 		for key in self.game_objects:

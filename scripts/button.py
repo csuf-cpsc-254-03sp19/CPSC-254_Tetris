@@ -1,5 +1,12 @@
 import pygame
 
+""" ---------------------------------------------------------------
+    Button Class
+    
+    This class is for adding buttons to the menu.
+    Each button will have a font, color, location, size, and text.
+--------------------------------------------------------------- """
+
 class Button():
 	def __init__(self, font, color, x, y, width, height, text = ''):
 		self.font = font
@@ -27,3 +34,23 @@ class Button():
 			if pos[1] > self.y and pos[1] < self.y + self.height:
 				return True
 		return False
+
+""" --------------------------------------------------
+    Initialize each Button object with:
+        - an assigned font
+	- an assigned color
+	- an x-location
+	- a  y-locaiton
+	- the width of the button
+	- the height of the button	
+-----------------------------------------------------
+    Button()::draw()
+    
+    This function will be used to draw button objects
+    by utilizing the pygame.draw.rect function.
+-----------------------------------------------------
+    Button()::isOver()
+    
+    This function will be used to check whether
+    the cursor is over a button or not.
+-------------------------------------------------- """

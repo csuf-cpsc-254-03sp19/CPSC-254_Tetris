@@ -10,6 +10,7 @@ import pygame
 
 class InputManager:
 	def __init__(self, game_system):
+		#initialize keybindings
 		self.pressed_up = False
 		self.pressed_down = False
 		self.pressed_left = False
@@ -26,9 +27,12 @@ class InputManager:
 		self.game_system = game_system
 
 	def reset_tapped_keys(self):
+		#reset tapped keys
 		self.tapped_c = False
 		
 	def check_events(self):
+		#this function will be used to respond to keypress
+		#and keyrelease events based on the mouse location.
 		self.mouse_button_pressed = False
 		self.pos = pygame.mouse.get_pos()
 		self.mouse_x, self.mouse_y = self.pos

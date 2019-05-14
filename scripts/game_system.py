@@ -16,11 +16,13 @@ from button import Button
 ---------------------------------------------------------------- """
 class GameSystem:
 	def __init__(self):
+		#initialize with a flag to check if active, a timer, a clock, and a backbuffer
 		self.is_active = True
 		self.delta_time = 0.0
 		self.pygame_clock = None
 		self.backbuffer = None
 		
+		#initialize an assortment of RGB assigned colors
 		self.color_red = (255, 0, 0)
 		self.color_red2 = (255, 100, 100)
 		self.color_green = (0, 190, 0)
@@ -34,6 +36,7 @@ class GameSystem:
 		self.color_Orange = (232, 125, 35)
 		self.color_cosmic_blue = (9, 130, 187)
 		
+		#initialize all the keybindings
 		self.button_game_title = None
 		self.button_play_tetris = None
 		self.button_quit = None
@@ -44,10 +47,10 @@ class GameSystem:
 		self.button_x = None
 		self.button_c = None	
 		
+		#initialize the necessary objects from other classes
 		self.input_manager = InputManager(self)
 		self.object_factory = None
 		self.settings = None
-		
 		self.game_objects = {}
 		self.test_objects = {}
 		self.gui_tile_objects = {}
@@ -58,9 +61,9 @@ class GameSystem:
 		self.pygame_sprites = {}
 		self.fonts = {}
 		self.settings = Settings()
-		
 		self.object_factory = ObjectFactory(self.game_objects, self.pygame_sprites, self.fonts)
-				
+		
+		#initilaize the required settings
 		self.settings.object_factory = self.object_factory
 		self.settings.tetronimos_falling = self.tetronimos_falling
 		self.settings.tetronimo_blocks = self.tetronimo_blocks
@@ -70,6 +73,8 @@ class GameSystem:
 		self.object_factory.input_manager = self.input_manager
 		
 	def start_program(self):
+		#This function starts off the program, initializing pygame
+		# and loading all the sprites, sounds, and fonts
 		self.setup_pygame()
 		self.load_sprites()
 		self.load_fonts()
@@ -77,8 +82,10 @@ class GameSystem:
 		self.main_loop()
 		
 	def load_sprites(self):
+		#Assign the image folder url
 		image_folder_url = "../images/"
 		
+		#Load all the sprites from the image folder
 		self.load_sprite(image_folder_url, "debug_1.png")
 		self.load_sprite(image_folder_url, "debug_2.png")
 		self.load_sprite(image_folder_url, "wall_in_up.png")
@@ -117,21 +124,29 @@ class GameSystem:
 		self.load_sprite(image_folder_url, "display_T.png")
 		
 	def load_sprite(self, image_folder_url, cur_sprite_image_name):
+		#Load a single sprite from the images folder.
 		self.pygame_sprites[cur_sprite_image_name] = pygame.image.load( \
 			image_folder_url + cur_sprite_image_name)
 	
 	def load_fonts(self):
+		#Assign the fonts url
 		font_url = "../fonts/"
 		
+		#Load all the fonts for the game engine
 		self.load_font(font_url, "PressStart2P.ttf", "PressStart2P-small", 12)
 		self.load_font(font_url, "PressStart2P.ttf", "PressStart2P-medium", 32)
 	
 	def load_font(self, fonts_url, font_file_name, font_key_name, size):
+		#Load an individual font file
 		font1 = pygame.font.Font(fonts_url + font_file_name, size)
 		
+		# Assign the current font being loaded
 		self.fonts[font_key_name] = font1
 	
 	def setup_pygame(self):
+		#Setup & create the pygame module,
+		#Get the pygame clock and backbuffer,
+		#And set the caption for the game window
 		pygame.init()
 		self.settings.init_audio()
 		self.pygame_clock = pygame.time.Clock()
@@ -139,15 +154,18 @@ class GameSystem:
 		pygame.display.set_caption("Tired of Tetris' Team - Tetris Game")
 		
 	def setup_title_screen(self):
+		#Assign the code for setting up the title screen
 		highscore = open("../data/high_score.txt", "a+")
 		highscore = open("../data/high_score.txt", "r+")
 		highscore = highscore.read()
 
+		#Assign the high score file
 		if not highscore: 
 			whighscore = open("../data/high_score.txt", "w+")
 			whighscore.write(str(0))
 			whighscore.close()
 
+		#Assign the high score number
 		self.button_game_title = Button(self.fonts["PressStart2P-medium"], \
 			self.color_cosmic_blue, 120, 0, 400, 100, "Let's Play Tetris")
 		self.button_play_tetris = Button(self.fonts["PressStart2P-medium"], \
@@ -169,8 +187,10 @@ class GameSystem:
 			
 		
 	def title_screen_update(self):
+		#Assign the mouse position
 		pos = self.input_manager.pos
 		
+		#If Play Tetris Button and Start Game System or Quit
 		if self.input_manager.mouse_button_pressed:
 			if self.button_play_tetris.isOver(pos):				
 				self.setup_classic_game()
@@ -193,16 +213,18 @@ class GameSystem:
 			else:
 				self.button_quit.color = self.color_blue
 	
-	def setup_classic_game(self):		
+	def setup_classic_game(self):	
+		#Setup a classic game map and load the gameplay
 		self.load_map_gameplay()
 		text = "NEXT:"
 		color = (0, 0, 0)
 		
 		self.object_factory.create_text_box(80, 32, text, "PressStart2P-small", color, False)
-		
+
+		#Create all text boxes for the same gui
 		text = "SAVE:"
 		self.object_factory.create_text_box(80, 640, text, "PressStart2P-small", color, False)
-		
+
 		text = "HIGH SCORE:"
 		self.object_factory.create_text_box(565, 32, text, "PressStart2P-small", color, False)
 		
@@ -215,16 +237,20 @@ class GameSystem:
 		self.settings.text_box_score = self.object_factory.create_text_box(565, 145, str(self.settings.score), "PressStart2P-small", 
 				color_white, False)
 		
+		#Read in highscore from high_score.txt file
 		highscore = open("../data/high_score.txt", "r+")
 		highscore = highscore.read()
 
+		#If the score is less than or equal to highscore, then print high score
 		if int(self.settings.score) <= int(highscore):
 			self.settings.text_box_highscore = self.object_factory.create_text_box(565, 70, str(highscore), "PressStart2P-small", 
 				color_white, False)
+		#If the score is greater than the highscore then print highscore will wturn to score number
 		if int(self.settings.score) > int(highscore):
 			self.settings.text_box_highscore = self.object_factory.create_text_box(565, 70, str(self.settings.score), "PressStart2P-small", 
 				color_white, False)
-				
+		
+		#Create the teteronimo display objects
 		self.settings.tetronimo_displays.append( \
 				self.object_factory.create_tetronimo_display(80, 118))
 		self.settings.tetronimo_displays.append( \
@@ -243,12 +269,14 @@ class GameSystem:
 		pygame.mixer.music.play(8, 0.0)
 		
 	def load_map_gameplay(self):
+		#First clear the previous game objects
 		self.clear_gameplay_objects()
 		with open("../data/map_gameplay.txt", "r") as in_file:
 			map_text = in_file.read()
 			cur_position_x = 8
 			cur_position_y = 8
 			
+			#Use with to ensure that the file is read entirely, for all x,y positions and their characters
 			for char in map_text:
 				if not char == '\n':				
 					if char == 'C':
@@ -314,6 +342,8 @@ class GameSystem:
 			
 	
 	def load_map_game_over(self):
+		#Loads the game over map after the player loses
+		#First clear the previous game objects
 		self.clear_gameplay_objects()
 		
 		self.setup_title_screen()
@@ -337,6 +367,9 @@ class GameSystem:
 		self.settings.tetronimo_displays.clear()
 		
 	def clear_gameplay_objects(self):
+		#Clear all these gameplay objects.
+		#Assign the current game object from being deleted.
+		#Assign the tag of the current game object to be deleted
 		for key in self.game_objects:
 			cur_game_obj = self.game_objects[key]
 			cur_tag = cur_game_obj.tag
@@ -346,6 +379,28 @@ class GameSystem:
 				cur_game_obj.marked_for_deletion = True
 			
 	def main_loop(self):
+		"""
+		The main loop for updating the game objects and updating all of the engine components.
+		At the entrance to the main loop,
+		    The game will continue to loop until is_active is set to false.
+		Manage the frame rate to 60 fps.
+		Reset the tapped keys in the input manager.
+		Check the keyboard input events.
+		If the q key is pressed, then exit the game.
+		Otherwise, update the game state.
+		    Gather the game object types
+		    Update the game objects
+		    Update the teteronimos falling.
+			The current game object being updated
+			Only update game objects that are active
+		    Update the teteronimos displays.
+			The current game object being updated
+			Only pupdate game objects that are active
+			Update the collision detection
+		Render the game objects
+		Lastly, clean up the game engine when finished.
+		"""
+		
 		while self.is_active:
 			self.pygame_clock.tick(60)
 			self.delta_time = self.pygame_clock.get_time()
@@ -379,6 +434,15 @@ class GameSystem:
 		self.clean_up()
 		
 	def destroy_objects_marked_for_deletion(self):
+		"""
+		Destroy the game objects that are marked for deletion
+		Initialize the empty keys of the dictionary
+		For each key,
+		    Assign the current game object to be deleted
+		If marked for deletion,
+		    remove the game object from the game object dictionary.
+		For all these keys, pop/remove the keys.
+		"""		
 		empty_keys = []
 		
 		for key in self.game_objects:
@@ -391,6 +455,23 @@ class GameSystem:
 			self.game_objects.pop(key, None)
 		
 	def render_objects(self):
+		"""
+		Render all the game objects to the screen.
+		Default set buffer to render a black screen.
+		Otherwise, fill the back ground with black first
+		Then, Render every object in the group. Render every object by layer from 0 to 3.
+		And for each object in the group, 
+		    Assign the current game object to be rendered.
+		Only render game obects that are active
+		If active,
+		    Assign the current sprite of the game object being rendered
+		    If no image, don't render it.
+		    Update the object rect for the rendering process
+		    Assign the current image being rendered.
+		    Assign the rect of the current image being rendered.
+		    Blit the sprite to the backbuffer.
+		Lastly, swap the backbuffer.		
+		"""		
 		if self.settings.game_state == 1:
 			self.backbuffer.fill(self.color_cosmic_blue)
 			self.button_game_title.draw(self.backbuffer, self.color_cosmic_blue)
@@ -423,6 +504,15 @@ class GameSystem:
 		pygame.display.flip()
 		
 	def gather_objects(self):
+		"""
+		Gathers all of the game objects by tag type for processing.
+		By First, clear all the previous game object references.
+		Then, gather all the game objects and place them in their proper dictionaries.
+		And for each object,
+		    Assign the current game object to be examined.
+		Assign the current game object id
+		Check the tag to tell which dictionary to put the object reference in.		
+		"""
 		self.test_objects.clear()
 		self.gui_tile_objects.clear()
 		self.gui_text_objects.clear()
@@ -447,6 +537,7 @@ class GameSystem:
 				self.tetronimo_displays[object_id] = cur_game_obj
 	@staticmethod
 	def clean_up():
+		#Cleans up the game system after it is finished working. Exit pygame
 		pygame.quit()
 """ -------------------------------------------------------------------------
     Initialize each GameSystem object with:

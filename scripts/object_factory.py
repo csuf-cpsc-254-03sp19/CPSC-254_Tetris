@@ -15,6 +15,7 @@ from tetronimo_display import TetronimoDisplay
 --------------------------------------------------------------- """
 class ObjectFactory():
 	def __init__(self, game_objects, pygame_sprites, fonts):
+		#initialize with the necessary objects and sprites
 		self.cur_game_obj_id = 0		
 		self.game_objects = game_objects		
 		self.pygame_sprites = pygame_sprites		
@@ -23,6 +24,7 @@ class ObjectFactory():
 		self.input_manager = None
 		
 	def create_test_obj(self, position_x, position_y, obj_type):
+		#this function creates the test object
 		debug_sprites = {}
 		sprite_name = ""
 		
@@ -43,6 +45,7 @@ class ObjectFactory():
 		return cur_object
 		
 	def create_gui_wall(self, position_x, position_y, sprite_name):
+		#this function creates the gui wall object
 		cur_sprites = {}
 		
 		sprite_1 = SpriteImage(0, self.pygame_sprites[sprite_name])
@@ -59,7 +62,9 @@ class ObjectFactory():
 		
 	def create_text_box(self, position_x, position_y, text, font_name, color, \
 			align_bottom_left):
-			
+		#this function creates the text box object
+		#assign the current font being used
+		#assign the text box being created
 		cur_font = self.fonts[font_name]
 		cur_object = TextBox(self.cur_game_obj_id, 2, position_x, position_y, text, \
 				cur_font, color, align_bottom_left, None, None)
@@ -70,6 +75,8 @@ class ObjectFactory():
 		return cur_object
 		
 	def create_tetronimo_falling(self, position_x, position_y, tetronimo_type):
+		#This function will create the teteronimo falling
+		#Assign the teteronimo falling to be created
 		cur_object = TetronimoFalling(self.cur_game_obj_id, 3, position_x, position_y, \
 				tetronimo_type, self, self.settings, self.input_manager, None, None)
 
@@ -79,6 +86,13 @@ class ObjectFactory():
 		return cur_object
 		
 	def create_tetronimo_block(self, position_x, position_y, tetronimo_type, owner):
+		"""
+		This function creates the teteronimo falling.
+		Assign the sprites for the teteronimo block.
+		Assign the name of the current sprite being gathered.
+		Assign the current sprites to be gathered.
+		Assign the teteronimo falling to be created.
+		"""
 		sprites = {}
 		sprite_name = "block_yellow.png"
 		
@@ -121,6 +135,13 @@ class ObjectFactory():
 		return cur_object
 
 	def create_tetronimo_display(self, position_x, position_y):
+		"""
+		This functions creates the teteronimo display.
+		Assign the sprites for the teteronimo block.
+		Assign the name of the current sprite being gathered.
+		Assign the current sprites being gathered
+		Assign the teteroimo displaybeing created.
+		"""
 		sprites = {}
 		sprite_name = "display_none.png"
 		
